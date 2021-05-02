@@ -133,6 +133,8 @@ ALTER TABLE `shorts_video_tiktok_video`
   
 ALTER TABLE `shorts_channel` ADD `description` TEXT NOT NULL AFTER `youtube_id`;
 
+ALTER TABLE `shorts_channel`  ADD `heropost_login` VARCHAR(255) NOT NULL  AFTER `youtube_id`,  ADD `heropost_password` VARCHAR(255) NOT NULL  AFTER `heropost_login`,  ADD `google_client_id` TEXT NOT NULL  AFTER `heropost_password`,  ADD `google_client_secret` TEXT NOT NULL  AFTER `google_client_id`,  ADD `google_refresh_token` TEXT NOT NULL  AFTER `google_client_secret`;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
