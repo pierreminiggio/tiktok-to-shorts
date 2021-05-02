@@ -138,8 +138,7 @@ class App
                 $poster = (new VideoPosterFactory())->make(new Logger());
 
                 try {
-                    $youtubeId = 'blablazizi' . $videoToPostId;
-                    /*$youtubeId = $poster->post(
+                    $youtubeId = $poster->post(
                         $linkedChannel['heropost_login'],
                         $linkedChannel['heropost_password'],
                         $linkedChannel['youtube_id'],
@@ -158,7 +157,7 @@ class App
                             $linkedChannel['google_client_secret'],
                             $linkedChannel['google_refresh_token']
                         )
-                    );*/
+                    );
                 } catch (Exception $e) {
                     echo
                         PHP_EOL
