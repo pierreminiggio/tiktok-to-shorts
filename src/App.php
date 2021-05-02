@@ -35,6 +35,7 @@ class App
         $channelRepository = new LinkedChannelRepository($databaseFetcher);
         $nonUploadedVideoRepository = new NonUploadedVideoRepository($databaseFetcher);
         $downloader = new Downloader();
+        $youtubeMaxTitleLength = 100;
         //$videoToCreateRepository = new VideoToCreateRepository($databaseFetcher);
 
         $linkedChannels = $channelRepository->findAll();
@@ -56,7 +57,8 @@ class App
             echo PHP_EOL . count($videosToCreate) . ' videos to create :' . PHP_EOL;
 
             foreach ($videosToCreate as $videoToCreate) {
-                echo PHP_EOL . 'Posting ' . $videoToCreate['legend'] . ' ...';
+                $legend = $videoToCreate['legend'];
+                echo PHP_EOL . 'Posting ' . $legend . ' ...';
 
                 $videoToCreateId = $videoToCreate['id'];
 
@@ -69,13 +71,51 @@ class App
                             $videoFile
                         );
                     } catch (DownloadFailedException $e) {
-                        echo PHP_EOL . 'Error while downloading ' . $videoToCreate['legend'] . ' : ' . $e->getMessage();
+                        echo PHP_EOL . 'Error while downloading ' . $legend . ' : ' . $e->getMessage();
                         break;
                     }
                     
                 }
-                var_dump($videoToCreateId);
-                die('test');
+
+                if (strlen($legend) <= 100) {
+                    $title = $legend;
+                } else {
+                    $legendWords = explode(' ', $legend);
+                    if (count($legendWords) === 1) {
+                        $title = substr($legend, 0, 100);
+                    } else {
+                        $title = 'Youtube Shorts video';
+                        $wipTitle = '';
+
+                        foreach ($legendWords as $legendWordIndex => $legendWord) {
+                            $newWipTitle = $wipTitle;
+
+                            if ($legendWordIndex > 0) {
+                                $newWipTitle .= ' ';
+                            }
+
+                            $newWipTitle .= $legendWord;
+
+                            if (strlen($newWipTitle) > 100) {
+                                break;
+                            }
+
+                            $wipTitle = $newWipTitle;
+                        }
+
+                        if ($wipTitle !== '') {
+                            $title = $wipTitle;
+                        }
+                    }
+                }
+                
+                $description = str_replace(
+                    '[tiktok_description]',
+                    $legend,
+                    $linkedChannel['description']
+                );
+                var_dump($description);
+                die;
 
                 if (false) {
                     // $videoToCreateRepository->insertVideoIfNeeded(
@@ -84,9 +124,9 @@ class App
                     //     $linkedChannel['s_id'],
                     //     $videoToCreate['id']
                     // );
-                    echo PHP_EOL . $videoToCreate['legend'] . ' posted !';
+                    echo PHP_EOL . $legend . ' posted !';
                 } else {
-                    echo PHP_EOL . 'Error while creating ' . $videoToCreate['legend'] . ' : ' . $res;
+                    echo PHP_EOL . 'Error while creating ' . $legend . ' : ' . $res;
                 }
             }
 
