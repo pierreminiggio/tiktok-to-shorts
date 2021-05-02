@@ -15,7 +15,6 @@
         "sort-packages": true
     },
     "require": {
-        "illuminate/support": "^8.30",
         "pierreminiggio/database-fetcher": "^1.0"
     }
 }

@@ -9,35 +9,39 @@ class NonUploadedVideoRepository
     public function __construct(private DatabaseFetcher $fetcher)
     {}
 
-    public function findByGithubAndYoutubeChannelIds(int $githubAccountId, int $youtubeChannelId): array
+    public function findByShortsAndTiktokChannelIds(
+        int $shortsChannelId,
+        int $tiktokChannelId
+    ): array
     {
-        $postedGithubPostIds = $this->fetcher->query(
+        $postedShortsVideoIds = $this->fetcher->query(
             $this->fetcher
-                ->createQuery('github_repo_youtube_video as gryv')
-                ->leftJoin('github_repo as g', 'g.id = gryv.github_id')
+                ->createQuery('shorts_video_tiktok_video as svtv')
+                ->join('shorts_video as g', 'g.id = svtv.shorts_id')
                 ->select('g.id')
-                ->where('g.account_id = :account_id')
+                ->where('g.channel_id = :channel_id')
             ,
-            ['account_id' => $githubAccountId]
+            ['channel_id' => $shortsChannelId]
         );
-        $postedGithubPostIds = array_map(fn ($entry) => (int) $entry['id'], $postedGithubPostIds);
+        $postedShortsVideoIds = array_map(fn ($entry) => (int) $entry['id'], $postedShortsVideoIds);
 
         $query = $this->fetcher
-            ->createQuery('youtube_video as y')
-            ->select('y.id, y.title, y.url')
-            ->where('y.channel_id = :channel_id' . (
-                $postedGithubPostIds ? ' AND gryv.id IS NULL' : ''
+            ->createQuery('tiktok_video as t')
+            ->select('t.id, t.legend, t.tiktok_url as url')
+            ->where('t.account_id = :channel_id' . (
+                $postedShortsVideoIds ? ' AND svtv.id IS NULL' : ''
             ))
+            ->limit(1)
         ;
 
-        if ($postedGithubPostIds) {
-            $query->leftJoin(
-                'github_repo_youtube_video as gryv',
-                'y.id = gryv.youtube_id AND gryv.github_id IN (' . implode(', ', $postedGithubPostIds) . ')'
+        if ($postedShortsVideoIds) {
+            $query->join(
+                'shorts_video_tiktok_video as svtv',
+                't.id = svtv.tiktok_id AND svtv.shorts_id IN (' . implode(', ', $postedShortsVideoIds) . ')'
             );
         }
-        $postsToPost = $this->fetcher->query($query, ['channel_id' => $youtubeChannelId]);
+        $videosToPost = $this->fetcher->query($query, ['channel_id' => $tiktokChannelId]);
         
-        return $postsToPost;
+        return $videosToPost;
     }
 }

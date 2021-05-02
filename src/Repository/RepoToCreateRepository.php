@@ -4,27 +4,27 @@ namespace PierreMiniggio\TiktokToShorts\Repository;
 
 use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
 
-class RepoToCreateRepository
+class VideoToCreateRepository
 {
     public function __construct(private DatabaseFetcher $fetcher)
     {}
 
-    public function insertRepoIfNeeded(
-        string $githubId,
+    public function insertVideoIfNeeded(
+        string $shortsId,
         string $url,
-        int $githubAccountId,
-        int $youtubeVideoId
+        int $shortsChannelId,
+        int $tiktokVideoId
     ): void
     {
         $postQueryParams = [
-            'account_id' => $githubAccountId,
-            'github_id' => $githubId
+            'channel_id' => $shortsChannelId,
+            'shorts_id' => $shortsId
         ];
         $findPostIdQuery = [
             $this->fetcher
-                ->createQuery('github_repo')
+                ->createQuery('shorts_video')
                 ->select('id')
-                ->where('account_id = :account_id AND github_id = :github_id')
+                ->where('channel_id = :channel_id AND shorts_id = :shorts_id')
             ,
             $postQueryParams
         ];
@@ -33,10 +33,10 @@ class RepoToCreateRepository
         if (! $queriedIds) {
             $this->fetcher->exec(
                 $this->fetcher
-                    ->createQuery('github_repo')
+                    ->createQuery('shorts_video')
                     ->insertInto(
-                        'account_id, github_id, url',
-                        ':account_id, :github_id, :url'
+                        'channel_id, shorts_id, url',
+                        ':channel_id, :shorts_id, :url'
                     )
                 ,
                 array_merge($postQueryParams, ['url' => $url])
@@ -47,15 +47,15 @@ class RepoToCreateRepository
         $postId = (int) $queriedIds[0]['id'];
         
         $pivotQueryParams = [
-            'github_id' => $postId,
-            'youtube_id' => $youtubeVideoId
+            'shorts_id' => $postId,
+            'tiktok_id' => $tiktokVideoId
         ];
 
         $queriedPivotIds = $this->fetcher->query(
             $this->fetcher
-                ->createQuery('github_repo_youtube_video')
+                ->createQuery('shorts_video_tiktok_video')
                 ->select('id')
-                ->where('github_id = :github_id AND youtube_id = :youtube_id')
+                ->where('shorts_id = :shorts_id AND tiktok_id = :tiktok_id')
             ,
             $pivotQueryParams
         );
@@ -63,8 +63,8 @@ class RepoToCreateRepository
         if (! $queriedPivotIds) {
             $this->fetcher->exec(
                 $this->fetcher
-                    ->createQuery('github_repo_youtube_video')
-                    ->insertInto('github_id, youtube_id', ':github_id, :youtube_id')
+                    ->createQuery('shorts_video_tiktok_video')
+                    ->insertInto('shorts_id, tiktok_id', ':shorts_id, :tiktok_id')
                 ,
                 $pivotQueryParams
             );

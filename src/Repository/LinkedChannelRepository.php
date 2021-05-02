@@ -13,15 +13,25 @@ class LinkedChannelRepository
     {
         return $this->fetcher->query(
             $this->fetcher
-                ->createQuery('github_account_youtube_channel as gayc')
-                ->leftJoin(
-                    'github_account as g',
-                    'g.id = gayc.github_id'
+                ->createQuery('shorts_channel_tiktok_account as scta')
+                ->join(
+                    'shorts_channel as s',
+                    's.id = scta.shorts_id'
+                )
+                ->join(
+                    'youtube_channel as y',
+                    's.youtube_id = y.id'
                 )
                 ->select('
-                    gayc.youtube_id as y_id,
-                    g.id as g_id,
-                    g.api_token
+                    scta.tiktok_id as t_id,
+                    s.id as s_id,
+                    y.youtube_id,
+                    s.heropost_login,
+                    s.heropost_password,
+                    s.google_client_id,
+                    s.google_client_secret,
+                    s.google_refresh_token,
+                    s.description
                 ')
         );
     }
