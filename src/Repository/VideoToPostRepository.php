@@ -4,14 +4,13 @@ namespace PierreMiniggio\TiktokToShorts\Repository;
 
 use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
 
-class VideoToCreateRepository
+class VideoToPostRepository
 {
     public function __construct(private DatabaseFetcher $fetcher)
     {}
 
     public function insertVideoIfNeeded(
         string $shortsId,
-        string $url,
         int $shortsChannelId,
         int $tiktokVideoId
     ): void
@@ -35,11 +34,11 @@ class VideoToCreateRepository
                 $this->fetcher
                     ->createQuery('shorts_video')
                     ->insertInto(
-                        'channel_id, shorts_id, url',
-                        ':channel_id, :shorts_id, :url'
+                        'channel_id, shorts_id',
+                        ':channel_id, :shorts_id'
                     )
                 ,
-                array_merge($postQueryParams, ['url' => $url])
+                $postQueryParams
             );
             $queriedIds = $this->fetcher->query(...$findPostIdQuery);
         }

@@ -14,7 +14,7 @@ use PierreMiniggio\TikTokDownloader\DownloadFailedException;
 use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
 use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
-use PierreMiniggio\TiktokToShorts\Repository\VideoToCreateRepository;
+use PierreMiniggio\TiktokToShorts\Repository\VideoToPostRepository;
 
 class App
 {
@@ -42,7 +42,7 @@ class App
         $nonUploadedVideoRepository = new NonUploadedVideoRepository($databaseFetcher);
         $downloader = new Downloader();
         $youtubeMaxTitleLength = 100;
-        //$videoToCreateRepository = new VideoToCreateRepository($databaseFetcher);
+        $videoToPostRepository = new VideoToPostRepository($databaseFetcher);
 
         $linkedChannels = $channelRepository->findAll();
 
@@ -54,26 +54,27 @@ class App
 
         foreach ($linkedChannels as $linkedChannel) {
 
-            echo PHP_EOL . PHP_EOL . 'Checking channel ' . $linkedChannel['s_id'] . '...';
+            $shortsChannelId = $linkedChannel['s_id'];
+            echo PHP_EOL . PHP_EOL . 'Checking channel ' . $shortsChannelId . '...';
 
-            $videosToCreate = $nonUploadedVideoRepository->findByShortsAndTiktokChannelIds(
-                $linkedChannel['s_id'],
+            $videosToPost = $nonUploadedVideoRepository->findByShortsAndTiktokChannelIds(
+                $shortsChannelId,
                 $linkedChannel['t_id']
             );
-            echo PHP_EOL . count($videosToCreate) . ' videos to create :' . PHP_EOL;
+            echo PHP_EOL . count($videosToPost) . ' videos to post :' . PHP_EOL;
 
-            foreach ($videosToCreate as $videoToCreate) {
-                $legend = $videoToCreate['legend'];
+            foreach ($videosToPost as $videoToPost) {
+                $legend = $videoToPost['legend'];
                 echo PHP_EOL . 'Posting ' . $legend . ' ...';
 
-                $videoToCreateId = $videoToCreate['id'];
+                $videoToPostId = $videoToPost['id'];
 
-                $videoFile = $cacheDir . DIRECTORY_SEPARATOR . $videoToCreateId . '.mp4';
+                $videoFile = $cacheDir . DIRECTORY_SEPARATOR . $videoToPostId . '.mp4';
 
                 if (! file_exists($videoFile)) {
                     try {
                         $downloader->downloadWithoutWatermark(
-                            $videoToCreate['url'],
+                            $videoToPost['url'],
                             $videoFile
                         );
                     } catch (DownloadFailedException $e) {
@@ -83,12 +84,12 @@ class App
                     
                 }
 
-                if (strlen($legend) <= 100) {
+                if (strlen($legend) <= $youtubeMaxTitleLength) {
                     $title = $legend;
                 } else {
                     $legendWords = explode(' ', $legend);
                     if (count($legendWords) === 1) {
-                        $title = substr($legend, 0, 100);
+                        $title = substr($legend, 0, $youtubeMaxTitleLength);
                     } else {
                         $title = 'Youtube Shorts video';
                         $wipTitle = '';
@@ -102,7 +103,7 @@ class App
 
                             $newWipTitle .= $legendWord;
 
-                            if (strlen($newWipTitle) > 100) {
+                            if (strlen($newWipTitle) > $youtubeMaxTitleLength) {
                                 break;
                             }
 
@@ -137,7 +138,7 @@ class App
                 $poster = (new VideoPosterFactory())->make(new Logger());
 
                 try {
-                    $youtubeId = 'blablazizi';
+                    $youtubeId = 'blablazizi' . $videoToPostId;
                     /*$youtubeId = $poster->post(
                         $linkedChannel['heropost_login'],
                         $linkedChannel['heropost_password'],
@@ -166,13 +167,19 @@ class App
                         . ' : '
                         . $e->getMessage()
                     ;
+                    break;
                 }
-                var_dump($youtubeId);
+
+                $videoToPostRepository->insertVideoIfNeeded(
+                    $youtubeId,
+                    $shortsChannelId,
+                    $videoToPostId
+                );
 
                 echo PHP_EOL . $legend . ' posted !';
             }
 
-            echo PHP_EOL . PHP_EOL . 'Done for channel ' . $linkedChannel['s_id'] . ' !';
+            echo PHP_EOL . PHP_EOL . 'Done for channel ' . $shortsChannelId . ' !';
         }
 
         return $code;
