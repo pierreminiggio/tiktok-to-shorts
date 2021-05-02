@@ -129,7 +129,11 @@ ALTER TABLE `shorts_video`
 -- AUTO_INCREMENT pour la table `shorts_video_tiktok_video`
 --
 ALTER TABLE `shorts_video_tiktok_video`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  
+ALTER TABLE `shorts_channel` ADD `description` TEXT NOT NULL AFTER `youtube_id`;
+
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
