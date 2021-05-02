@@ -114,7 +114,21 @@ class App
                     $legend,
                     $linkedChannel['description']
                 );
-                var_dump($description);
+                
+                $tags = [];
+                $explodedOnHashTags = explode('#', $legend);
+                if (count($explodedOnHashTags) > 1) {
+                    foreach ($explodedOnHashTags as $tagStartSplitIndex => $tagStartSplitElt) {
+                        if ($tagStartSplitIndex === 0) {
+                            continue;
+                        }
+                        
+                        $tag = trim(explode(' ', $tagStartSplitElt)[0]);
+                        $tags[] = $tag;
+                    }
+                }
+
+                var_dump($tags);
                 die;
 
                 if (false) {
