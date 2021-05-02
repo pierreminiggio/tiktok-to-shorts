@@ -2,7 +2,13 @@
 
 namespace PierreMiniggio\TiktokToShorts;
 
+use Exception;
 use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
+use PierreMiniggio\GoogleTokenRefresher\GoogleClient;
+use PierreMiniggio\HeropostAndYoutubeAPIBasedVideoPoster\Video;
+use PierreMiniggio\HeropostAndYoutubeAPIBasedVideoPoster\VideoPosterFactory;
+use PierreMiniggio\HeropostYoutubePosting\YoutubeCategoriesEnum;
+use PierreMiniggio\HeropostYoutubePosting\YoutubeVideo;
 use PierreMiniggio\TikTokDownloader\Downloader;
 use PierreMiniggio\TikTokDownloader\DownloadFailedException;
 use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
@@ -128,20 +134,42 @@ class App
                     }
                 }
 
-                var_dump($tags);
-                die;
+                $poster = (new VideoPosterFactory())->make(new Logger());
 
-                if (false) {
-                    // $videoToCreateRepository->insertVideoIfNeeded(
-                    //     $jsonResponse['id'],
-                    //     $jsonResponse['url'],
-                    //     $linkedChannel['s_id'],
-                    //     $videoToCreate['id']
-                    // );
-                    echo PHP_EOL . $legend . ' posted !';
-                } else {
-                    echo PHP_EOL . 'Error while creating ' . $legend . ' : ' . $res;
+                try {
+                    $youtubeId = 'blablazizi';
+                    /*$youtubeId = $poster->post(
+                        $linkedChannel['heropost_login'],
+                        $linkedChannel['heropost_password'],
+                        $linkedChannel['youtube_id'],
+                        new Video(
+                            new YoutubeVideo(
+                                $title,
+                                $description,
+                                YoutubeCategoriesEnum::EDUCATION
+                            ),
+                            $tags,
+                            false,
+                            $videoFile
+                        ),
+                        new GoogleClient(
+                            $linkedChannel['google_client_id'],
+                            $linkedChannel['google_client_secret'],
+                            $linkedChannel['google_refresh_token']
+                        )
+                    );*/
+                } catch (Exception $e) {
+                    echo
+                        PHP_EOL
+                        . 'Error while uploading '
+                        . $legend
+                        . ' : '
+                        . $e->getMessage()
+                    ;
                 }
+                var_dump($youtubeId);
+
+                echo PHP_EOL . $legend . ' posted !';
             }
 
             echo PHP_EOL . PHP_EOL . 'Done for channel ' . $linkedChannel['s_id'] . ' !';

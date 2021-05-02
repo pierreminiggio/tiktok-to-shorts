@@ -14,8 +14,15 @@
     "config": {
         "sort-packages": true
     },
+    "minimum-stability": "dev",
     "require": {
         "pierreminiggio/database-fetcher": "^1.0",
+        "pierreminiggio/heropost-and-youtube-api-based-video-poster": "9999999-dev",
         "pierreminiggio/tiktok-downloader": "^1.0"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "bash post-install.sh"
+        ]
     }
 }
