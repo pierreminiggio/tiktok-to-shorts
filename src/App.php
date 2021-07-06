@@ -39,6 +39,10 @@ class App
             mkdir($cacheDir);
         }
 
+        $apiConfig = $config['api'];
+        $apiUrl = $apiConfig['url'];
+        $apiToken = $apiConfig['token'];
+
         $databaseFetcher = new DatabaseFetcher((new DatabaseConnectionFactory())->makeFromConfig($config['db']));
         $channelRepository = new LinkedChannelRepository($databaseFetcher);
         $nonUploadedVideoRepository = new NonUploadedVideoRepository($databaseFetcher);
@@ -172,7 +176,48 @@ class App
                         break;
                     }
                 } elseif ($postStrategy === UploadStrategyEnum::SCRAPING) {
-                    var_dump($linkedChannel['youtube_id']);
+                    var_dump($videoFile); die;
+                    $curl = curl_init($apiUrl . '/' . $linkedChannel['youtube_id']);
+
+                    $authHeader = ['Content-Type: application/json' , 'Authorization: Bearer ' . $apiToken];
+                    curl_setopt_array($curl, [
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_HTTPHEADER => $authHeader,
+                        CURLOPT_POST => 1,
+                        CURLOPT_POSTFIELDS => json_encode([
+                            'video_url' => '',
+                            'title' => $title,
+                            'description' => $description
+                        ])
+                    ]);
+
+                    $response = curl_exec($curl);
+                    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                    curl_close($curl);
+
+                    if ($httpCode !== 200) {
+                        echo 'Posting failed';
+                        continue;
+                    }
+
+                    if (! $response) {
+                        echo 'API returned an empty response';
+                        continue;
+                    }
+
+                    $jsonResponse = json_decode($response, true);
+
+                    if (! $jsonResponse) {
+                        echo 'API returned a bad json response : ' . $response;
+                        continue;
+                    }
+
+                    if (empty($jsonResponse['id'])) {
+                        echo 'API returned a bad json response, "id" missing : ' . $jsonResponse;
+                        continue;
+                    }
+
+                    $youtubeId = $jsonResponse['id'];
                 }
 
                 $videoToPostRepository->insertVideoIfNeeded(

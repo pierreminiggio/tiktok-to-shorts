@@ -18,7 +18,8 @@
     "require": {
         "pierreminiggio/database-fetcher": "^1.0",
         "pierreminiggio/heropost-and-youtube-api-based-video-poster": "9999999-dev",
-        "pierreminiggio/tiktok-downloader": "^1.0"
+        "pierreminiggio/tiktok-downloader": "^1.0",
+        "ext-curl": "*"
     },
     "scripts": {
         "post-install-cmd": [
