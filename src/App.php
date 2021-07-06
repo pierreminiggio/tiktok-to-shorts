@@ -4,6 +4,8 @@ namespace PierreMiniggio\TiktokToShorts;
 
 use Exception;
 use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
+use PierreMiniggio\GoogleTokenRefresher\AccessTokenProvider;
+use PierreMiniggio\GoogleTokenRefresher\AuthException;
 use PierreMiniggio\GoogleTokenRefresher\GoogleClient;
 use PierreMiniggio\HeropostAndYoutubeAPIBasedVideoPoster\Video;
 use PierreMiniggio\HeropostAndYoutubeAPIBasedVideoPoster\VideoPosterFactory;
@@ -15,6 +17,8 @@ use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
 use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
 use PierreMiniggio\TiktokToShorts\Repository\VideoToPostRepository;
+use PierreMiniggio\YoutubeVideoUpdater\Exception\BadVideoIdException;
+use PierreMiniggio\YoutubeVideoUpdater\VideoUpdater;
 
 class App
 {
@@ -179,7 +183,7 @@ class App
                 } elseif ($postStrategy === UploadStrategyEnum::SCRAPING) {
                     $explodedVideoFilePath = explode(DIRECTORY_SEPARATOR, $videoFile);
                     $fileName = $explodedVideoFilePath[count($explodedVideoFilePath) - 1];
-                    var_dump($cacheUrl, $fileName); die;
+
                     $curl = curl_init($apiUrl . '/' . $linkedChannel['youtube_id']);
 
                     $authHeader = ['Content-Type: application/json' , 'Authorization: Bearer ' . $apiToken];
@@ -188,7 +192,7 @@ class App
                         CURLOPT_HTTPHEADER => $authHeader,
                         CURLOPT_POST => 1,
                         CURLOPT_POSTFIELDS => json_encode([
-                            'video_url' => '',
+                            'video_url' => $cacheUrl . '/' . $fileName,
                             'title' => $title,
                             'description' => $description
                         ])
@@ -221,6 +225,36 @@ class App
                     }
 
                     $youtubeId = $jsonResponse['id'];
+
+                    $tokenProvider = new AccessTokenProvider();
+                    try {
+                        $accessToken = $tokenProvider->get(
+                            $linkedChannel['google_client_id'],
+                            $linkedChannel['google_client_secret'],
+                            $linkedChannel['google_refresh_token']
+                        );
+                    } catch (AuthException $e) {
+                        echo $e->getMessage();
+                        // what ever
+                    }
+
+                    if (isset($accessToken)) {
+                        $videoUpdater = new VideoUpdater();
+                        try {
+                            $videoUpdater->update(
+                                $accessToken,
+                                $youtubeId,
+                                $title,
+                                $description,
+                                $tags,
+                                YoutubeCategoriesEnum::EDUCATION,
+                                false
+                            );
+                        } catch (BadVideoIdException $e) {
+                            echo $e->getMessage();
+                            // what ever
+                        }
+                    }
                 }
 
                 $videoToPostRepository->insertVideoIfNeeded(
