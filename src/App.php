@@ -42,6 +42,7 @@ class App
         $apiConfig = $config['api'];
         $apiUrl = $apiConfig['url'];
         $apiToken = $apiConfig['token'];
+        $cacheUrl = $config['cache_url'];
 
         $databaseFetcher = new DatabaseFetcher((new DatabaseConnectionFactory())->makeFromConfig($config['db']));
         $channelRepository = new LinkedChannelRepository($databaseFetcher);
@@ -176,7 +177,9 @@ class App
                         break;
                     }
                 } elseif ($postStrategy === UploadStrategyEnum::SCRAPING) {
-                    var_dump($videoFile); die;
+                    $explodedVideoFilePath = explode(DIRECTORY_SEPARATOR, $videoFile);
+                    $fileName = $explodedVideoFilePath[count($explodedVideoFilePath) - 1];
+                    var_dump($cacheUrl, $fileName); die;
                     $curl = curl_init($apiUrl . '/' . $linkedChannel['youtube_id']);
 
                     $authHeader = ['Content-Type: application/json' , 'Authorization: Bearer ' . $apiToken];
