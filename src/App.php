@@ -22,6 +22,8 @@ class App
     public function run(): int
     {
 
+        $postStrategy = UploadStrategyEnum::SCRAPING;
+
         $code = 0;
 
         $config = require(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config.php');
@@ -135,38 +137,42 @@ class App
                     }
                 }
 
-                $poster = (new VideoPosterFactory())->make(new Logger());
+                if ($postStrategy === UploadStrategyEnum::HEROPOST) {
+                    $poster = (new VideoPosterFactory())->make(new Logger());
 
-                try {
-                    $youtubeId = $poster->post(
-                        $linkedChannel['heropost_login'],
-                        $linkedChannel['heropost_password'],
-                        $linkedChannel['youtube_id'],
-                        new Video(
-                            new YoutubeVideo(
-                                $title,
-                                $description,
-                                YoutubeCategoriesEnum::EDUCATION
+                    try {
+                        $youtubeId = $poster->post(
+                            $linkedChannel['heropost_login'],
+                            $linkedChannel['heropost_password'],
+                            $linkedChannel['youtube_id'],
+                            new Video(
+                                new YoutubeVideo(
+                                    $title,
+                                    $description,
+                                    YoutubeCategoriesEnum::EDUCATION
+                                ),
+                                $tags,
+                                false,
+                                $videoFile
                             ),
-                            $tags,
-                            false,
-                            $videoFile
-                        ),
-                        new GoogleClient(
-                            $linkedChannel['google_client_id'],
-                            $linkedChannel['google_client_secret'],
-                            $linkedChannel['google_refresh_token']
-                        )
-                    );
-                } catch (Exception $e) {
-                    echo
-                        PHP_EOL
-                        . 'Error while uploading '
-                        . $legend
-                        . ' : '
-                        . $e->getMessage()
-                    ;
-                    break;
+                            new GoogleClient(
+                                $linkedChannel['google_client_id'],
+                                $linkedChannel['google_client_secret'],
+                                $linkedChannel['google_refresh_token']
+                            )
+                        );
+                    } catch (Exception $e) {
+                        echo
+                            PHP_EOL
+                            . 'Error while uploading '
+                            . $legend
+                            . ' : '
+                            . $e->getMessage()
+                        ;
+                        break;
+                    }
+                } elseif ($postStrategy === UploadStrategyEnum::SCRAPING) {
+                    var_dump($linkedChannel['youtube_id']);
                 }
 
                 $videoToPostRepository->insertVideoIfNeeded(
