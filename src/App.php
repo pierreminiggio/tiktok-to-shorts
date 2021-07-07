@@ -46,7 +46,12 @@ class App
         $apiConfig = $config['api'];
         $apiUrl = $apiConfig['url'];
         $apiToken = $apiConfig['token'];
+        
         $cacheUrl = $config['cache_url'];
+        
+        $spinnerApiConfig = $config['spinner_api'];
+        $spinnerApiUrl = $spinnerApiConfig !== null ? $spinnerApiConfig['url'] : null;
+        $spinnerApiToken = $spinnerApiConfig !== null ? $spinnerApiConfig['token'] : null;
 
         $databaseFetcher = new DatabaseFetcher((new DatabaseConnectionFactory())->makeFromConfig($config['db']));
         $channelRepository = new LinkedChannelRepository($databaseFetcher);
