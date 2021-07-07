@@ -262,6 +262,8 @@ class App
                     $shortsChannelId,
                     $videoToPostId
                 );
+                
+                unlink($videoFile);
 
                 echo PHP_EOL . $legend . ' posted !';
             }
