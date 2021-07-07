@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'spinner_api' => null // [url => string, token => string]
     'cache_url' => 'https://cache.com',
     'api' => [
         'url' => 'https://api.com',
