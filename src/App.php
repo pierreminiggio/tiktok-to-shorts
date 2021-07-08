@@ -309,7 +309,7 @@ class App
         
         $curl = curl_init($spinnerApiUrl . '/tiktok-video-file');
 
-        $authHeader = ['Content-Type: application/json' , 'Authorization: Bearer ' . $apiToken];
+        $authHeader = ['Content-Type: application/json' , 'Authorization: Bearer ' . $spinnerApiToken];
         curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $authHeader,
