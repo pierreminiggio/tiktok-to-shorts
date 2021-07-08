@@ -284,4 +284,49 @@ class App
             }
         }
     }
+    
+    protected function getRenderedVideoUrl(string $videoToPostUrl, ?string $spinnerApiUrl, ?string $spinnerApiToken): ?string
+    {
+        if ($spinnerApiUrl === null || $spinnerApiToken === null) {
+            return null;
+        }
+        
+        $curl = curl_init($spinnerApiUrl . '/tiktok-video-file');
+
+        $authHeader = ['Content-Type: application/json' , 'Authorization: Bearer ' . $apiToken];
+        curl_setopt_array($curl, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => $authHeader,
+            CURLOPT_POST => 1,
+            CURLOPT_POSTFIELDS => $videoToPostUrl
+        ]);
+
+        $response = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+
+        if ($httpCode !== 200) {
+            return null;
+        }
+
+        if (! $response) {
+            return null;
+        }
+
+        $jsonResponse = json_decode($response, true);
+
+        if (! $jsonResponse) {
+            return null;
+        }
+
+        if (! isset($jsonResponse['id']) || ! isset($jsonResponse['hasRenderedFile'])) {
+            return null;
+        }
+        
+        if ($jsonResponse['hasRenderedFile'] === false) {
+            return null;
+        }
+        
+        return $spinnerApiUrl . '/render/' . $jsonResponse['id'];
+    }
 }
