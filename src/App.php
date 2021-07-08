@@ -212,7 +212,7 @@ class App
                     curl_close($curl);
 
                     if ($httpCode !== 200) {
-                        echo 'Posting failed';
+                        echo 'Posting failed : ' . $response;
                         continue;
                     }
 
