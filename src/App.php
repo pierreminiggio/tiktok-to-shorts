@@ -141,7 +141,11 @@ class App
                 if ($postStrategy === UploadStrategyEnum::HEROPOST) {
                     $poster = (new VideoPosterFactory())->make(new Logger());
 
-                    $this->downloadVideoFileIfNeeded($videoToPostUrl, $videoFile, $legend);
+                    try {
+                        $this->downloadVideoFileIfNeeded($videoToPostUrl, $videoFile, $legend);
+                    } catch (Exception) {
+                        break;
+                    }
                     
                     try {
                         $youtubeId = $poster->post(
@@ -178,7 +182,11 @@ class App
                     $videoUrl = getRenderedVideoUrl($videoToPostUrl, $spinnerApiUrl, $spinnerApiToken);
                     
                     if ($videoUrl === null) {
-                        $this->downloadVideoFileIfNeeded($videoToPostUrl, $videoFile, $legend);
+                        try {
+                            $this->downloadVideoFileIfNeeded($videoToPostUrl, $videoFile, $legend);
+                        } catch (Exception) {
+                            break;
+                        }
 
                         $explodedVideoFilePath = explode(DIRECTORY_SEPARATOR, $videoFile);
                         $fileName = $explodedVideoFilePath[count($explodedVideoFilePath) - 1];
@@ -275,6 +283,9 @@ class App
         return $code;
     }
     
+    /**
+     * @throws Exception
+     */
     protected function downloadVideoFileIfNeeded(string $videoToPostUrl, string $videoFile, string $legend): void
     {
         if (! file_exists($videoFile)) {
@@ -285,7 +296,7 @@ class App
                 );
             } catch (DownloadFailedException $e) {
                 echo PHP_EOL . 'Error while downloading ' . $legend . ' : ' . $e->getMessage();
-                break;
+                throw new Exception('Download failed');
             }
         }
     }
