@@ -142,7 +142,7 @@ class App
                     $poster = (new VideoPosterFactory())->make(new Logger());
 
                     try {
-                        $this->downloadVideoFileIfNeeded($videoToPostUrl, $videoFile, $legend);
+                        $this->downloadVideoFileIfNeeded($downloader, $videoToPostUrl, $videoFile, $legend);
                     } catch (Exception) {
                         break;
                     }
@@ -183,7 +183,7 @@ class App
                     
                     if ($videoUrl === null) {
                         try {
-                            $this->downloadVideoFileIfNeeded($videoToPostUrl, $videoFile, $legend);
+                            $this->downloadVideoFileIfNeeded($downloader, $videoToPostUrl, $videoFile, $legend);
                         } catch (Exception) {
                             break;
                         }
@@ -286,7 +286,7 @@ class App
     /**
      * @throws Exception
      */
-    protected function downloadVideoFileIfNeeded(string $videoToPostUrl, string $videoFile, string $legend): void
+    protected function downloadVideoFileIfNeeded(Downloader $downloader, string $videoToPostUrl, string $videoFile, string $legend): void
     {
         if (! file_exists($videoFile)) {
             try {
