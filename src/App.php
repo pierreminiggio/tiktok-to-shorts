@@ -87,18 +87,9 @@ class App
 
                 $videoFile = $cacheDir . DIRECTORY_SEPARATOR . $videoToPostId . '.mp4';
 
-                if (! file_exists($videoFile)) {
-                    try {
-                        $downloader->downloadWithoutWatermark(
-                            $videoToPost['url'],
-                            $videoFile
-                        );
-                    } catch (DownloadFailedException $e) {
-                        echo PHP_EOL . 'Error while downloading ' . $legend . ' : ' . $e->getMessage();
-                        break;
-                    }
-                    
-                }
+                $videoToPostUrl = $videoToPost['url'];
+                
+                $this->downloadVideoFileIfNeeded($videoToPostUrl, $videoFile, $legend);
 
                 if (strlen($legend) <= $youtubeMaxTitleLength) {
                     $title = $legend;
@@ -277,5 +268,20 @@ class App
         }
 
         return $code;
+    }
+    
+    protected function downloadVideoFileIfNeeded(string $videoToPostUrl, string $videoFile, string $legend): void
+    {
+        if (! file_exists($videoFile)) {
+            try {
+                $downloader->downloadWithoutWatermark(
+                    $videoToPostUrl,
+                    $videoFile
+                );
+            } catch (DownloadFailedException $e) {
+                echo PHP_EOL . 'Error while downloading ' . $legend . ' : ' . $e->getMessage();
+                break;
+            }
+        }
     }
 }
