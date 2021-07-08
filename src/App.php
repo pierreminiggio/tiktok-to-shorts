@@ -179,7 +179,7 @@ class App
                         break;
                     }
                 } elseif ($postStrategy === UploadStrategyEnum::SCRAPING) {
-                    $videoUrl = getRenderedVideoUrl($videoToPostUrl, $spinnerApiUrl, $spinnerApiToken);
+                    $videoUrl = $this->getRenderedVideoUrl($videoToPostUrl, $spinnerApiUrl, $spinnerApiToken);
                     
                     if ($videoUrl === null) {
                         try {
