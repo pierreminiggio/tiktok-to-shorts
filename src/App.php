@@ -175,10 +175,15 @@ class App
                         break;
                     }
                 } elseif ($postStrategy === UploadStrategyEnum::SCRAPING) {
-                    $this->downloadVideoFileIfNeeded($videoToPostUrl, $videoFile, $legend);
+                    $videoUrl = getRenderedVideoUrl($videoToPostUrl, $spinnerApiUrl, $spinnerApiToken);
                     
-                    $explodedVideoFilePath = explode(DIRECTORY_SEPARATOR, $videoFile);
-                    $fileName = $explodedVideoFilePath[count($explodedVideoFilePath) - 1];
+                    if ($videoUrl === null) {
+                        $this->downloadVideoFileIfNeeded($videoToPostUrl, $videoFile, $legend);
+
+                        $explodedVideoFilePath = explode(DIRECTORY_SEPARATOR, $videoFile);
+                        $fileName = $explodedVideoFilePath[count($explodedVideoFilePath) - 1];
+                        $videoUrl = $cacheUrl . '/' . $fileName;
+                    }
 
                     $curl = curl_init($apiUrl . '/' . $linkedChannel['youtube_id']);
 
@@ -188,7 +193,7 @@ class App
                         CURLOPT_HTTPHEADER => $authHeader,
                         CURLOPT_POST => 1,
                         CURLOPT_POSTFIELDS => json_encode([
-                            'video_url' => $cacheUrl . '/' . $fileName,
+                            'video_url' => $videoUrl,
                             'title' => $title,
                             'description' => $description
                         ])
