@@ -272,7 +272,9 @@ class App
                     $videoToPostId
                 );
                 
-                unlink($videoFile);
+                if (file_exists($videoFile)) {
+                    unlink($videoFile);
+                }
 
                 echo PHP_EOL . $legend . ' posted !';
             }
