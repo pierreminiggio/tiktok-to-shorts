@@ -84,12 +84,8 @@ class App
                 echo PHP_EOL . 'Posting ' . $legend . ' ...';
 
                 $videoToPostId = $videoToPost['id'];
-
                 $videoFile = $cacheDir . DIRECTORY_SEPARATOR . $videoToPostId . '.mp4';
-
                 $videoToPostUrl = $videoToPost['url'];
-                
-                $this->downloadVideoFileIfNeeded($videoToPostUrl, $videoFile, $legend);
 
                 if (strlen($legend) <= $youtubeMaxTitleLength) {
                     $title = $legend;
@@ -145,6 +141,8 @@ class App
                 if ($postStrategy === UploadStrategyEnum::HEROPOST) {
                     $poster = (new VideoPosterFactory())->make(new Logger());
 
+                    $this->downloadVideoFileIfNeeded($videoToPostUrl, $videoFile, $legend);
+                    
                     try {
                         $youtubeId = $poster->post(
                             $linkedChannel['heropost_login'],
@@ -177,6 +175,8 @@ class App
                         break;
                     }
                 } elseif ($postStrategy === UploadStrategyEnum::SCRAPING) {
+                    $this->downloadVideoFileIfNeeded($videoToPostUrl, $videoFile, $legend);
+                    
                     $explodedVideoFilePath = explode(DIRECTORY_SEPARATOR, $videoFile);
                     $fileName = $explodedVideoFilePath[count($explodedVideoFilePath) - 1];
 
