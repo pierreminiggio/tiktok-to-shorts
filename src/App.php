@@ -202,8 +202,8 @@ class App
                         CURLOPT_POST => 1,
                         CURLOPT_POSTFIELDS => json_encode([
                             'video_url' => $videoUrl,
-                            'title' => $title,
-                            'description' => $description
+                            'title' => 'Shorts video ' . $videoToPostId,
+                            'description' => 'Super Shorts Description'
                         ])
                     ]);
 
