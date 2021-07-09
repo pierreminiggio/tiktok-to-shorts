@@ -328,7 +328,7 @@ class App
         ]);
 
         $videoInfoCurlResponse = curl_exec($videoInfoCurl);
-        curl_close($videoInfoCurlResponse);
+        curl_close($videoInfoCurl);
 
         if (empty($videoInfoCurlResponse)) {
             throw new Exception('Empty response');
