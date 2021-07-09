@@ -56,7 +56,7 @@ class App
         $databaseFetcher = new DatabaseFetcher((new DatabaseConnectionFactory())->makeFromConfig($config['db']));
         $channelRepository = new LinkedChannelRepository($databaseFetcher);
         $nonUploadedVideoRepository = new NonUploadedVideoRepository($databaseFetcher);
-        $downloader = new Downloader();
+        $bashDownloader = new Downloader();
         $youtubeMaxTitleLength = 100;
         $videoToPostRepository = new VideoToPostRepository($databaseFetcher);
 
@@ -142,7 +142,7 @@ class App
                     $poster = (new VideoPosterFactory())->make(new Logger());
 
                     try {
-                        $this->downloadVideoFileIfNeeded($downloader, $videoToPostUrl, $videoFile, $legend);
+                        $this->downloadVideoFileIfNeeded($bashDownloader, $videoToPostUrl, $videoFile, $legend);
                     } catch (Exception) {
                         break;
                     }
@@ -183,7 +183,7 @@ class App
                     
                     if ($videoUrl === null) {
                         try {
-                            $this->downloadVideoFileIfNeeded($downloader, $videoToPostUrl, $videoFile, $legend);
+                            $this->downloadVideoFileIfNeeded($bashDownloader, $videoToPostUrl, $videoFile, $legend);
                         } catch (Exception) {
                             break;
                         }
@@ -288,16 +288,21 @@ class App
     /**
      * @throws Exception
      */
-    protected function downloadVideoFileIfNeeded(Downloader $downloader, string $videoToPostUrl, string $videoFile, string $legend): void
+    protected function downloadVideoFileIfNeeded(
+        Downloader $bashDownloader,
+        string $videoToPostUrl,
+        string $videoFile,
+        string $legend
+    ): void
     {
         if (! file_exists($videoFile)) {
             try {
-                $downloader->downloadWithoutWatermark(
+                $bashDownloader->downloadWithoutWatermark(
                     $videoToPostUrl,
                     $videoFile
                 );
             } catch (DownloadFailedException $e) {
-                echo PHP_EOL . 'Error while downloading ' . $legend . ' : ' . $e->getMessage();
+                echo PHP_EOL . 'Error while downloading ' . $legend . ' using bash downloader : ' . $e->getMessage();
                 throw new Exception('Download failed');
             }
         }
