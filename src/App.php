@@ -310,6 +310,7 @@ class App
                     echo PHP_EOL . 'Error while downloading ' . $legend . ' using godownloader.com : ' . $e->getMessage();
                     throw new Exception('Download failed');
                 }
+                echo ' Downloaded !';
             }
         }
     }
