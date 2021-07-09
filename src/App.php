@@ -303,9 +303,57 @@ class App
                 );
             } catch (DownloadFailedException $e) {
                 echo PHP_EOL . 'Error while downloading ' . $legend . ' using bash downloader : ' . $e->getMessage();
-                throw new Exception('Download failed');
+                echo PHP_EOL . 'Trying godownloader.com...';
+                try {
+                    $this->tryGoDownloaderDotCom($videoToPostUrl, $videoFile);
+                } catch (Exception $e) {
+                    echo PHP_EOL . 'Error while downloading ' . $legend . ' using godownloader.com : ' . $e->getMessage();
+                    throw new Exception('Download failed');
+                }
             }
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function tryGoDownloaderDotCom(string $videoToPostUrl, string $videoFile): void
+    {
+        $videoInfoCurl = curl_init(
+            'https://godownloader.com/api/tiktok-no-watermark-free?url=' . $videoToPostUrl . '&key=godownloader.com'
+        );
+
+        curl_setopt_array($videoInfoCurl, [
+            CURLOPT_RETURNTRANSFER => 1
+        ]);
+
+        $videoInfoCurlResponse = curl_exec($videoInfoCurl);
+        curl_close($videoInfoCurlResponse);
+
+        if (empty($videoInfoCurlResponse)) {
+            throw new Exception('Empty response');
+        }
+
+        $videoInfoCurlJsonResponse = json_decode($videoInfoCurlResponse, true);
+
+        if (empty($videoInfoCurlJsonResponse)) {
+            throw new Exception('Empty JSON response');
+        }
+
+        if (empty($videoInfoCurlJsonResponse['video_no_watermark'])) {
+            throw new Exception('Missing video_no_watermark url');
+        }
+
+        $videoNoWatermarkUrl = $videoInfoCurlJsonResponse['video_no_watermark'];
+
+        $fp = fopen($videoFile, 'w+');
+        $ch = curl_init($videoNoWatermarkUrl);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 50);
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($fp);
     }
     
     protected function getRenderedVideoUrl(string $videoToPostUrl, ?string $spinnerApiUrl, ?string $spinnerApiToken): ?string
