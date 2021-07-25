@@ -16,10 +16,11 @@
     },
     "minimum-stability": "dev",
     "require": {
+        "ext-curl": "*",
         "pierreminiggio/database-fetcher": "^1.0",
-        "pierreminiggio/heropost-and-youtube-api-based-video-poster": "9999999-dev",
+        "pierreminiggio/heropost-and-youtube-api-based-video-poster": "dev-main",
         "pierreminiggio/tiktok-downloader": "^1.0",
-        "ext-curl": "*"
+        "pierreminiggio/video-render-for-tiktok-video-checker": "dev-main"
     },
     "scripts": {
         "post-install-cmd": [

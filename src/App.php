@@ -17,6 +17,7 @@ use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
 use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
 use PierreMiniggio\TiktokToShorts\Repository\VideoToPostRepository;
+use PierreMiniggio\VideoRenderForTiktokVideoChecker\VideoRenderForTiktokVideoChecker;
 use PierreMiniggio\YoutubeVideoUpdater\Exception\BadVideoIdException;
 use PierreMiniggio\YoutubeVideoUpdater\VideoUpdater;
 
@@ -179,7 +180,11 @@ class App
                         break;
                     }
                 } elseif ($postStrategy === UploadStrategyEnum::SCRAPING) {
-                    $videoUrl = $this->getRenderedVideoUrl($videoToPostUrl, $spinnerApiUrl, $spinnerApiToken);
+                    $videoUrl = $spinnerApiUrl === null || $spinnerApiToken === null
+                        ? null
+                        : (new VideoRenderForTiktokVideoChecker($spinnerApiUrl, $spinnerApiToken))
+                            ->getRenderedVideoUrl($videoToPostUrl)
+                    ;
                     
                     if ($videoUrl === null) {
                         try {
@@ -355,50 +360,5 @@ class App
         curl_exec($ch);
         curl_close($ch);
         fclose($fp);
-    }
-    
-    protected function getRenderedVideoUrl(string $videoToPostUrl, ?string $spinnerApiUrl, ?string $spinnerApiToken): ?string
-    {
-        if ($spinnerApiUrl === null || $spinnerApiToken === null) {
-            return null;
-        }
-        
-        $curl = curl_init($spinnerApiUrl . '/tiktok-video-file');
-
-        $authHeader = ['Content-Type: application/json' , 'Authorization: Bearer ' . $spinnerApiToken];
-        curl_setopt_array($curl, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => $authHeader,
-            CURLOPT_POST => 1,
-            CURLOPT_POSTFIELDS => $videoToPostUrl
-        ]);
-
-        $response = curl_exec($curl);
-        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-
-        if ($httpCode !== 200) {
-            return null;
-        }
-
-        if (! $response) {
-            return null;
-        }
-
-        $jsonResponse = json_decode($response, true);
-
-        if (! $jsonResponse) {
-            return null;
-        }
-
-        if (! isset($jsonResponse['id']) || ! isset($jsonResponse['hasRenderedFile'])) {
-            return null;
-        }
-        
-        if ($jsonResponse['hasRenderedFile'] === false) {
-            return null;
-        }
-        
-        return $spinnerApiUrl . '/render/' . $jsonResponse['id'];
     }
 }
