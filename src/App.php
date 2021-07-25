@@ -11,8 +11,7 @@ use PierreMiniggio\HeropostAndYoutubeAPIBasedVideoPoster\Video;
 use PierreMiniggio\HeropostAndYoutubeAPIBasedVideoPoster\VideoPosterFactory;
 use PierreMiniggio\HeropostYoutubePosting\YoutubeCategoriesEnum;
 use PierreMiniggio\HeropostYoutubePosting\YoutubeVideo;
-use PierreMiniggio\TikTokDownloader\Downloader;
-use PierreMiniggio\TikTokDownloader\DownloadFailedException;
+use PierreMiniggio\MultiSourcesTiktokDownloader\MultiSourcesTiktokDownloader;
 use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
 use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
@@ -49,6 +48,7 @@ class App
         $apiToken = $apiConfig['token'];
         
         $cacheUrl = $config['cache_url'];
+        $downloader = MultiSourcesTiktokDownloader::buildSelf();
         
         $spinnerApiConfig = $config['spinner_api'];
         $spinnerApiUrl = $spinnerApiConfig !== null ? $spinnerApiConfig['url'] : null;
@@ -57,7 +57,6 @@ class App
         $databaseFetcher = new DatabaseFetcher((new DatabaseConnectionFactory())->makeFromConfig($config['db']));
         $channelRepository = new LinkedChannelRepository($databaseFetcher);
         $nonUploadedVideoRepository = new NonUploadedVideoRepository($databaseFetcher);
-        $bashDownloader = new Downloader();
         $youtubeMaxTitleLength = 100;
         $videoToPostRepository = new VideoToPostRepository($databaseFetcher);
 
@@ -143,7 +142,7 @@ class App
                     $poster = (new VideoPosterFactory())->make(new Logger());
 
                     try {
-                        $this->downloadVideoFileIfNeeded($bashDownloader, $videoToPostUrl, $videoFile, $legend);
+                        $this->downloadVideoFileIfNeeded($downloader, $videoToPostUrl, $videoFile);
                     } catch (Exception) {
                         break;
                     }
@@ -188,7 +187,7 @@ class App
                     
                     if ($videoUrl === null) {
                         try {
-                            $this->downloadVideoFileIfNeeded($bashDownloader, $videoToPostUrl, $videoFile, $legend);
+                            $this->downloadVideoFileIfNeeded($downloader, $videoToPostUrl, $videoFile);
                         } catch (Exception) {
                             break;
                         }
@@ -294,71 +293,20 @@ class App
      * @throws Exception
      */
     protected function downloadVideoFileIfNeeded(
-        Downloader $bashDownloader,
+        MultiSourcesTiktokDownloader $downloader,
         string $videoToPostUrl,
-        string $videoFile,
-        string $legend
+        string $videoFile
     ): void
     {
+        if (file_exists($videoFile)) {
+            return;
+        }
+
+        $temporaryVideoFile = $downloader->download($videoToPostUrl);
+        rename($temporaryVideoFile, $videoFile);
+
         if (! file_exists($videoFile)) {
-            try {
-                $bashDownloader->downloadWithoutWatermark(
-                    $videoToPostUrl,
-                    $videoFile
-                );
-            } catch (DownloadFailedException $e) {
-                echo PHP_EOL . 'Error while downloading ' . $legend . ' using bash downloader : ' . $e->getMessage();
-                echo PHP_EOL . 'Trying godownloader.com...';
-                try {
-                    $this->tryGoDownloaderDotCom($videoToPostUrl, $videoFile);
-                } catch (Exception $e) {
-                    echo PHP_EOL . 'Error while downloading ' . $legend . ' using godownloader.com : ' . $e->getMessage();
-                    throw new Exception('Download failed');
-                }
-                echo ' Downloaded !';
-            }
+            throw new Exception('Missing video file');
         }
-    }
-
-    /**
-     * @throws Exception
-     */
-    protected function tryGoDownloaderDotCom(string $videoToPostUrl, string $videoFile): void
-    {
-        $videoInfoCurl = curl_init(
-            'https://godownloader.com/api/tiktok-no-watermark-free?url=' . $videoToPostUrl . '&key=godownloader.com'
-        );
-
-        curl_setopt_array($videoInfoCurl, [
-            CURLOPT_RETURNTRANSFER => 1
-        ]);
-
-        $videoInfoCurlResponse = curl_exec($videoInfoCurl);
-        curl_close($videoInfoCurl);
-
-        if (empty($videoInfoCurlResponse)) {
-            throw new Exception('Empty response');
-        }
-
-        $videoInfoCurlJsonResponse = json_decode($videoInfoCurlResponse, true);
-
-        if (empty($videoInfoCurlJsonResponse)) {
-            throw new Exception('Empty JSON response');
-        }
-
-        if (empty($videoInfoCurlJsonResponse['video_no_watermark'])) {
-            throw new Exception('Missing video_no_watermark url');
-        }
-
-        $videoNoWatermarkUrl = $videoInfoCurlJsonResponse['video_no_watermark'];
-
-        $fp = fopen($videoFile, 'w+');
-        $ch = curl_init($videoNoWatermarkUrl);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 50);
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_exec($ch);
-        curl_close($ch);
-        fclose($fp);
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c55b7cf1ec889707843dcda9fa5246c",
+    "content-hash": "0d9aae15dcee37dd61ca042011a0bbc5",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -658,6 +658,46 @@
                 "source": "https://github.com/pierreminiggio/php-heropost-youtube-posting/tree/1.0.2"
             },
             "time": "2021-05-17T19:42:30+00:00"
+        },
+        {
+            "name": "pierreminiggio/multi-sources-tiktok-downloader",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pierreminiggio/multi-sources-tiktok-downloader.git",
+                "reference": "5234d259f9c6699871ee0b74c87d1e2400870279"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pierreminiggio/multi-sources-tiktok-downloader/zipball/5234d259f9c6699871ee0b74c87d1e2400870279",
+                "reference": "5234d259f9c6699871ee0b74c87d1e2400870279",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": "^8.0",
+                "pierreminiggio/tiktok-downloader": "^1.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PierreMiniggio\\MultiSourcesTiktokDownloader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Pierre MINIGGIO",
+                    "email": "pierre@miniggiodev.fr"
+                }
+            ],
+            "description": "TikTok Downloader",
+            "support": {
+                "issues": "https://github.com/pierreminiggio/multi-sources-tiktok-downloader/issues",
+                "source": "https://github.com/pierreminiggio/multi-sources-tiktok-downloader/tree/1.0.1"
+            },
+            "time": "2021-07-25T09:59:54+00:00"
         },
         {
             "name": "pierreminiggio/shell-tiktok-downloader",
@@ -1521,6 +1561,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "pierreminiggio/heropost-and-youtube-api-based-video-poster": 20,
+        "pierreminiggio/multi-sources-tiktok-downloader": 20,
         "pierreminiggio/video-render-for-tiktok-video-checker": 20
     },
     "prefer-stable": false,
