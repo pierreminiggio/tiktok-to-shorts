@@ -456,6 +456,42 @@
             "time": "2021-06-30T22:32:42+00:00"
         },
         {
+            "name": "pierreminiggio/are-files-the-same",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pierreminiggio/php-are-files-the-same.git",
+                "reference": "3173a382cd91faf6a1a79e101517e99626cb59da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pierreminiggio/php-are-files-the-same/zipball/3173a382cd91faf6a1a79e101517e99626cb59da",
+                "reference": "3173a382cd91faf6a1a79e101517e99626cb59da",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PierreMiniggio\\AreFilesTheSame\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Pierre MINIGGIO",
+                    "email": "pierre@miniggiodev.fr"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/pierreminiggio/php-are-files-the-same/issues",
+                "source": "https://github.com/pierreminiggio/php-are-files-the-same/tree/1.0.1"
+            },
+            "time": "2021-07-26T23:00:28+00:00"
+        },
+        {
             "name": "pierreminiggio/database-connection",
             "version": "1.2.1",
             "source": {
@@ -665,17 +701,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pierreminiggio/multi-sources-tiktok-downloader.git",
-                "reference": "5234d259f9c6699871ee0b74c87d1e2400870279"
+                "reference": "8f99de3f4fca568c3c41d5c2ed4b7c741a6528ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pierreminiggio/multi-sources-tiktok-downloader/zipball/5234d259f9c6699871ee0b74c87d1e2400870279",
-                "reference": "5234d259f9c6699871ee0b74c87d1e2400870279",
+                "url": "https://api.github.com/repos/pierreminiggio/multi-sources-tiktok-downloader/zipball/8f99de3f4fca568c3c41d5c2ed4b7c741a6528ce",
+                "reference": "8f99de3f4fca568c3c41d5c2ed4b7c741a6528ce",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "php": "^8.0",
+                "pierreminiggio/are-files-the-same": "^1.0",
                 "pierreminiggio/tiktok-downloader": "^1.0"
             },
             "default-branch": true,
@@ -695,9 +732,9 @@
             "description": "TikTok Downloader",
             "support": {
                 "issues": "https://github.com/pierreminiggio/multi-sources-tiktok-downloader/issues",
-                "source": "https://github.com/pierreminiggio/multi-sources-tiktok-downloader/tree/1.0.1"
+                "source": "https://github.com/pierreminiggio/multi-sources-tiktok-downloader/tree/1.1.0"
             },
-            "time": "2021-07-25T09:59:54+00:00"
+            "time": "2021-07-26T23:10:53+00:00"
         },
         {
             "name": "pierreminiggio/shell-tiktok-downloader",
@@ -1314,12 +1351,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "76def95773536a23b1f8caf69f5bdf56afda85a2"
+                "reference": "9338547c7777216541f2842b6bb967ff781cad45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/76def95773536a23b1f8caf69f5bdf56afda85a2",
-                "reference": "76def95773536a23b1f8caf69f5bdf56afda85a2",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/9338547c7777216541f2842b6bb967ff781cad45",
+                "reference": "9338547c7777216541f2842b6bb967ff781cad45",
                 "shasum": ""
             },
             "require": {
@@ -1331,6 +1368,7 @@
             },
             "conflict": {
                 "symfony/config": "<4.4",
+                "symfony/console": "<5.3",
                 "symfony/dependency-injection": "<5.0",
                 "symfony/http-kernel": "<5.0",
                 "symfony/twig-bundle": "<5.0",
@@ -1401,7 +1439,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-21T13:18:25+00:00"
+            "time": "2021-07-25T15:20:47+00:00"
         },
         {
             "name": "symfony/translation-contracts",
