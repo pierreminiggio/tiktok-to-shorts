@@ -68,10 +68,18 @@ class App
             return $code;
         }
 
-        foreach ($linkedChannels as $linkedChannel) {
+        /** @var string[] */
+        $alreadyPostedChannelIds = [];
 
+        foreach ($linkedChannels as $linkedChannel) {
             $shortsChannelId = $linkedChannel['s_id'];
+
             echo PHP_EOL . PHP_EOL . 'Checking channel ' . $shortsChannelId . '...';
+
+            if (in_array($shortsChannelId, $alreadyPostedChannelIds)) {
+                echo ' Already posted to this channel right now !';
+                continue;
+            }
 
             $videosToPost = $nonUploadedVideoRepository->findByShortsAndTiktokChannelIds(
                 $shortsChannelId,
@@ -281,6 +289,8 @@ class App
                 }
 
                 echo PHP_EOL . $legend . ' posted !';
+                $alreadyPostedChannelIds[] = $shortsChannelId;
+                break;
             }
 
             echo PHP_EOL . PHP_EOL . 'Done for channel ' . $shortsChannelId . ' !';
