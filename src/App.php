@@ -225,6 +225,11 @@ class App
 
                     if ($httpCode !== 200) {
                         echo 'Posting failed : ' . $response;
+                        
+                        if (str_contains($response, 'TimeoutError')) {
+                            $alreadyPostedChannelIds[] = $shortsChannelId;
+                        }
+                            
                         continue;
                     }
 
