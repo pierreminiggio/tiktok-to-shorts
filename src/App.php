@@ -146,47 +146,52 @@ class App
                     }
                 }
 
-                if ($postStrategy === UploadStrategyEnum::HEROPOST) {
-                    $poster = (new VideoPosterFactory())->make(new Logger());
+                $posted = false;
 
-                    try {
-                        $this->downloadVideoFileIfNeeded($downloader, $videoToPostUrl, $videoFile);
-                    } catch (Exception) {
-                        break;
-                    }
-                    
-                    try {
-                        $youtubeId = $poster->post(
-                            $linkedChannel['heropost_login'],
-                            $linkedChannel['heropost_password'],
-                            $linkedChannel['youtube_id'],
-                            new Video(
-                                new YoutubeVideo(
-                                    $title,
-                                    $description,
-                                    YoutubeCategoriesEnum::EDUCATION
-                                ),
-                                $tags,
-                                false,
-                                $videoFile
+                // Try heropost first
+                $poster = (new VideoPosterFactory())->make(new Logger());
+
+                try {
+                    $this->downloadVideoFileIfNeeded($downloader, $videoToPostUrl, $videoFile);
+                } catch (Exception) {
+                    break;
+                }
+                
+                try {
+                    $youtubeId = $poster->post(
+                        $linkedChannel['heropost_login'],
+                        $linkedChannel['heropost_password'],
+                        $linkedChannel['youtube_id'],
+                        new Video(
+                            new YoutubeVideo(
+                                $title,
+                                $description,
+                                YoutubeCategoriesEnum::EDUCATION
                             ),
-                            new GoogleClient(
-                                $linkedChannel['google_client_id'],
-                                $linkedChannel['google_client_secret'],
-                                $linkedChannel['google_refresh_token']
-                            )
-                        );
-                    } catch (Exception $e) {
-                        echo
-                            PHP_EOL
-                            . 'Error while uploading '
-                            . $legend
-                            . ' : '
-                            . $e->getMessage()
-                        ;
-                        break;
-                    }
-                } elseif ($postStrategy === UploadStrategyEnum::SCRAPING) {
+                            $tags,
+                            false,
+                            $videoFile
+                        ),
+                        new GoogleClient(
+                            $linkedChannel['google_client_id'],
+                            $linkedChannel['google_client_secret'],
+                            $linkedChannel['google_refresh_token']
+                        )
+                    );
+                    $posted = true;
+                } catch (Exception $e) {
+                    echo
+                        PHP_EOL
+                        . 'Error while uploading '
+                        . $legend
+                        . ' : '
+                        . $e->getMessage()
+                    ;
+                    break;
+                }
+                
+                // if failed, try Scraping
+                if (! $posted) {
                     $videoUrl = $spinnerApiUrl === null || $spinnerApiToken === null
                         ? null
                         : (new VideoRenderForTiktokVideoChecker($spinnerApiUrl, $spinnerApiToken))
@@ -251,35 +256,35 @@ class App
                     }
 
                     $youtubeId = $jsonResponse['id'];
+                }
 
-                    $tokenProvider = new AccessTokenProvider();
+                $tokenProvider = new AccessTokenProvider();
+                try {
+                    $accessToken = $tokenProvider->get(
+                        $linkedChannel['google_client_id'],
+                        $linkedChannel['google_client_secret'],
+                        $linkedChannel['google_refresh_token']
+                    );
+                } catch (AuthException $e) {
+                    echo $e->getMessage();
+                    // what ever
+                }
+
+                if (isset($accessToken)) {
+                    $videoUpdater = new VideoUpdater();
                     try {
-                        $accessToken = $tokenProvider->get(
-                            $linkedChannel['google_client_id'],
-                            $linkedChannel['google_client_secret'],
-                            $linkedChannel['google_refresh_token']
+                        $videoUpdater->update(
+                            $accessToken,
+                            $youtubeId,
+                            $title,
+                            $description,
+                            $tags,
+                            YoutubeCategoriesEnum::EDUCATION,
+                            false
                         );
-                    } catch (AuthException $e) {
+                    } catch (BadVideoIdException $e) {
                         echo $e->getMessage();
                         // what ever
-                    }
-
-                    if (isset($accessToken)) {
-                        $videoUpdater = new VideoUpdater();
-                        try {
-                            $videoUpdater->update(
-                                $accessToken,
-                                $youtubeId,
-                                $title,
-                                $description,
-                                $tags,
-                                YoutubeCategoriesEnum::EDUCATION,
-                                false
-                            );
-                        } catch (BadVideoIdException $e) {
-                            echo $e->getMessage();
-                            // what ever
-                        }
                     }
                 }
 
