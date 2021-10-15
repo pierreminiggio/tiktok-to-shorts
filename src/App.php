@@ -25,9 +25,6 @@ class App
 
     public function run(): int
     {
-
-        $postStrategy = UploadStrategyEnum::SCRAPING;
-
         $code = 0;
 
         $config = require(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config.php');
@@ -184,14 +181,14 @@ class App
                         PHP_EOL
                         . 'Error while uploading '
                         . $legend
-                        . ' : '
+                        . ' through Heropost : '
                         . $e->getMessage()
                     ;
-                    break;
                 }
                 
                 // if failed, try Scraping
                 if (! $posted) {
+                    echo PHP_EOL . 'Trying Scraping...';
                     $videoUrl = $spinnerApiUrl === null || $spinnerApiToken === null
                         ? null
                         : (new VideoRenderForTiktokVideoChecker($spinnerApiUrl, $spinnerApiToken))
