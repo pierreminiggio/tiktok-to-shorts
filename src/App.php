@@ -85,7 +85,8 @@ class App
             echo PHP_EOL . count($videosToPost) . ' videos to post :' . PHP_EOL;
 
             foreach ($videosToPost as $videoToPost) {
-                $legend = $videoToPost['legend'];
+                $defaultLegend = 'Most Awesome Shorts Video Ever #bestshorts';
+                $legend = $videoToPost['legend'] ?? $defaultLegend;
                 echo PHP_EOL . 'Posting ' . $legend . ' ...';
 
                 $videoToPostId = $videoToPost['id'];
@@ -99,7 +100,7 @@ class App
                     if (count($legendWords) === 1) {
                         $title = substr($legend, 0, $youtubeMaxTitleLength);
                     } else {
-                        $title = 'Youtube Shorts video';
+                        $title = $defaultLegend;
                         $wipTitle = '';
 
                         foreach ($legendWords as $legendWordIndex => $legendWord) {
