@@ -87,7 +87,7 @@ class App
             foreach ($videosToPost as $videoToPost) {
                 $defaultLegend = 'Most Awesome Shorts Video Ever #bestshorts';
                 $legend = $videoToPost['legend'] ?? $defaultLegend;
-                $legend = str_replace(['<', '>'], '', $legend); // Remove unallowed chars on Youtube
+                $legend = str_replace(['<', '>'], ' ', $legend); // Remove unallowed chars on Youtube
 
                 echo PHP_EOL . 'Posting ' . $legend . ' ...';
 
