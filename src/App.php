@@ -135,7 +135,7 @@ class App
 
                 $description = str_replace(
                     '[tiktok_url]',
-                    $videoToPostUrl,
+                    'https://tiktok.ggio.fr/' . $videoToPostId,
                     $description
                 );
                 
