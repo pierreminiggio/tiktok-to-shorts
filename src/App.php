@@ -132,6 +132,12 @@ class App
                     $legend,
                     $linkedChannel['description']
                 );
+
+                $description = str_replace(
+                    '[tiktok_url]',
+                    $videoToPostUrl,
+                    $description
+                );
                 
                 $tags = [];
                 $explodedOnHashTags = explode('#', $legend);
