@@ -162,6 +162,11 @@ class App
                 } catch (Exception) {
                     break;
                 }
+
+                if (filesize($videoFile) === 0) {
+                    echo PHP_EOL . PHP_EOL . ' Error : Video file is empty !';
+                    continue;
+                }
                 
                 try {
                     $youtubeId = $poster->post(
