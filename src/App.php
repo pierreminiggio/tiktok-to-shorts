@@ -89,9 +89,10 @@ class App
                 $legend = $videoToPost['legend'] ? $videoToPost['legend'] : $defaultLegend;
                 $legend = str_replace(['<', '>'], ' ', $legend); // Remove unallowed chars on Youtube
 
-                echo PHP_EOL . 'Posting ' . $legend . ' ...';
-
                 $videoToPostId = $videoToPost['id'];
+
+                echo PHP_EOL . 'Posting TikTok ' . $videoToPostId . ' : ' . $legend . ' ...';
+                
                 $videoFile = $cacheDir . DIRECTORY_SEPARATOR . $videoToPostId . '.mp4';
                 $videoToPostUrl = $videoToPost['url'];
 
