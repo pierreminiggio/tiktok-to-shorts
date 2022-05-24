@@ -159,7 +159,8 @@ class App
 
                 try {
                     $this->downloadVideoFileIfNeeded($downloader, $videoToPostUrl, $videoFile);
-                } catch (Exception) {
+                } catch (Exception $e) {
+                    echo PHP_EOL . PHP_EOL . ' Error : Downloading file failed : ' . $e->getMessage();
                     break;
                 }
 
