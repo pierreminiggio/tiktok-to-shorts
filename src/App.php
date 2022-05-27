@@ -161,12 +161,12 @@ class App
                 try {
                     $this->downloadVideoFileIfNeeded($downloader, $videoToPostUrl, $videoFile);
                 } catch (Exception $e) {
-                    echo PHP_EOL . PHP_EOL . ' Error : Downloading file failed : ' . $e->getMessage();
+                    echo PHP_EOL . PHP_EOL . 'Error : Downloading file failed : ' . $e->getMessage();
                     break;
                 }
 
                 if (filesize($videoFile) === 0) {
-                    echo PHP_EOL . PHP_EOL . ' Error : Video file is empty !';
+                    echo PHP_EOL . PHP_EOL . 'Error : Video file is empty !';
                     continue;
                 }
                 
