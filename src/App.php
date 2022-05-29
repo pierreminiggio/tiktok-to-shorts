@@ -12,6 +12,7 @@ use PierreMiniggio\HeropostAndYoutubeAPIBasedVideoPoster\VideoPosterFactory;
 use PierreMiniggio\HeropostYoutubePosting\YoutubeCategoriesEnum;
 use PierreMiniggio\HeropostYoutubePosting\YoutubeVideo;
 use PierreMiniggio\MultiSourcesTiktokDownloader\MultiSourcesTiktokDownloader;
+use PierreMiniggio\MultiSourcesTiktokDownloader\Repository;
 use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
 use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
@@ -27,7 +28,9 @@ class App
     {
         $code = 0;
 
-        $config = require(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config.php');
+        $projectDirectory = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+
+        $config = require($projectDirectory . 'config.php');
 
         if (empty($config['db'])) {
             echo 'No DB config';
@@ -35,7 +38,7 @@ class App
             return $code;
         }
 
-        $cacheDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'cache';
+        $cacheDir = $projectDirectory . 'cache';
         if (! file_exists($cacheDir)) {
             mkdir($cacheDir);
         }
@@ -43,9 +46,12 @@ class App
         $apiConfig = $config['api'];
         $apiUrl = $apiConfig['url'];
         $apiToken = $apiConfig['token'];
-        
         $cacheUrl = $config['cache_url'];
-        $downloader = MultiSourcesTiktokDownloader::buildSelf();
+        $snapTikApiActionConfig = $config['snap_tik_api_action'] ?? null;
+
+        $downloader = MultiSourcesTiktokDownloader::buildSelf(
+            $snapTikApiActionConfig ? new Repository(...$snapTikApiActionConfig) : null
+        );
         
         $spinnerApiConfig = $config['spinner_api'];
         $spinnerApiUrl = $spinnerApiConfig !== null ? $spinnerApiConfig['url'] : null;
