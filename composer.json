@@ -14,13 +14,12 @@
     "config": {
         "sort-packages": true
     },
-    "minimum-stability": "dev",
     "require": {
         "ext-curl": "*",
         "pierreminiggio/database-fetcher": "^1.0",
-        "pierreminiggio/heropost-and-youtube-api-based-video-poster": "dev-main",
-        "pierreminiggio/multi-sources-tiktok-downloader": "dev-main",
-        "pierreminiggio/video-render-for-tiktok-video-checker": "dev-main"
+        "pierreminiggio/heropost-and-youtube-api-based-video-poster": "^2.0",
+        "pierreminiggio/multi-sources-tiktok-downloader": "^1.2",
+        "pierreminiggio/video-render-for-tiktok-video-checker": "^2.0"
     },
     "scripts": {
         "post-install-cmd": [
