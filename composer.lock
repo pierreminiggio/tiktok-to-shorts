@@ -103,12 +103,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
-                "reference": "0a33aa68dfe98bcaa14b3b0b9eba355112c0a8d6"
+                "reference": "5aac36506247e4f0e50afe815ba711c16e65bcef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/collections/zipball/0a33aa68dfe98bcaa14b3b0b9eba355112c0a8d6",
-                "reference": "0a33aa68dfe98bcaa14b3b0b9eba355112c0a8d6",
+                "url": "https://api.github.com/repos/illuminate/collections/zipball/5aac36506247e4f0e50afe815ba711c16e65bcef",
+                "reference": "5aac36506247e4f0e50afe815ba711c16e65bcef",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +150,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-05-19T14:29:30+00:00"
+            "time": "2022-05-30T13:16:45+00:00"
         },
         {
             "name": "illuminate/conditionable",
@@ -158,12 +158,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/conditionable.git",
-                "reference": "56b4ba1166c264064bf63896f498a2bee320d16a"
+                "reference": "46b7beed47948bd2e67f523d0a76daa62775031e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/conditionable/zipball/56b4ba1166c264064bf63896f498a2bee320d16a",
-                "reference": "56b4ba1166c264064bf63896f498a2bee320d16a",
+                "url": "https://api.github.com/repos/illuminate/conditionable/zipball/46b7beed47948bd2e67f523d0a76daa62775031e",
+                "reference": "46b7beed47948bd2e67f523d0a76daa62775031e",
                 "shasum": ""
             },
             "require": {
@@ -196,7 +196,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-02-28T16:37:46+00:00"
+            "time": "2022-05-31T14:47:50+00:00"
         },
         {
             "name": "illuminate/contracts",
@@ -298,12 +298,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "c3cd8519b3d5d60eff9834df13132e42c454a1bd"
+                "reference": "f87ac1cc6dd3f9f03c9f7b48c7d94b7a53933a0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/c3cd8519b3d5d60eff9834df13132e42c454a1bd",
-                "reference": "c3cd8519b3d5d60eff9834df13132e42c454a1bd",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/f87ac1cc6dd3f9f03c9f7b48c7d94b7a53933a0a",
+                "reference": "f87ac1cc6dd3f9f03c9f7b48c7d94b7a53933a0a",
                 "shasum": ""
             },
             "require": {
@@ -359,7 +359,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-05-26T17:28:06+00:00"
+            "time": "2022-06-02T14:10:45+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -1094,12 +1094,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pierreminiggio/multi-sources-tiktok-downloader.git",
-                "reference": "c99b683028116a64f7b26f784b316dfebdfe8cdc"
+                "reference": "0b6a5fc88efbd23632c18afe1686b6020e61be54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pierreminiggio/multi-sources-tiktok-downloader/zipball/c99b683028116a64f7b26f784b316dfebdfe8cdc",
-                "reference": "c99b683028116a64f7b26f784b316dfebdfe8cdc",
+                "url": "https://api.github.com/repos/pierreminiggio/multi-sources-tiktok-downloader/zipball/0b6a5fc88efbd23632c18afe1686b6020e61be54",
+                "reference": "0b6a5fc88efbd23632c18afe1686b6020e61be54",
                 "shasum": ""
             },
             "require": {
@@ -1126,9 +1126,9 @@
             "description": "TikTok Downloader",
             "support": {
                 "issues": "https://github.com/pierreminiggio/multi-sources-tiktok-downloader/issues",
-                "source": "https://github.com/pierreminiggio/multi-sources-tiktok-downloader/tree/1.2.0"
+                "source": "https://github.com/pierreminiggio/multi-sources-tiktok-downloader/tree/1.2.1"
             },
-            "time": "2022-05-29T20:57:30+00:00"
+            "time": "2022-06-06T06:38:35+00:00"
         },
         {
             "name": "pierreminiggio/shell-tiktok-downloader",
@@ -1578,7 +1578,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/main"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.26.0"
             },
             "funding": [
                 {
@@ -1662,7 +1662,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/main"
+                "source": "https://github.com/symfony/polyfill-php80/tree/v1.26.0"
             },
             "funding": [
                 {
