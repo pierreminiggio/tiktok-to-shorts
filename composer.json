@@ -8,7 +8,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "PierreMiniggio\\TiktokToShorts\\": "src/"
+            "PierreMiniggio\\TiktokToShorts\\": "src/",
+            "PierreMiniggioManual\\TiktokToShorts\\": "manual/src/"
         }
     },
     "config": {
@@ -16,6 +17,7 @@
     },
     "require": {
         "ext-curl": "*",
+        "pierreminiggio/config-provider": "^1.0",
         "pierreminiggio/database-fetcher": "^1.0",
         "pierreminiggio/heropost-and-youtube-api-based-video-poster": "^2.0",
         "pierreminiggio/multi-sources-tiktok-downloader": "^1.2",

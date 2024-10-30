@@ -3,6 +3,7 @@
 namespace PierreMiniggio\TiktokToShorts;
 
 use Exception;
+use PierreMiniggio\ConfigProvider\ConfigProvider;
 use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
 use PierreMiniggio\GoogleTokenRefresher\AccessTokenProvider;
 use PierreMiniggio\GoogleTokenRefresher\AuthException;
@@ -30,7 +31,8 @@ class App
 
         $projectDirectory = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
 
-        $config = require($projectDirectory . 'config.php');
+        $configProvider = new ConfigProvider($projectDirectory);
+        $config = $configProvider->get();
 
         if (empty($config['db'])) {
             echo 'No DB config';
