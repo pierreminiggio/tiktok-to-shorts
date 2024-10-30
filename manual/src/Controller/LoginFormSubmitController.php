@@ -40,7 +40,7 @@ class LoginFormSubmitController
         $jsonResponse = json_decode($loginCurlResult, true);
 
         if (empty($jsonResponse['token'])) {
-            throw new Exception('No token');
+            throw new Exception('No token, json response : ' . json_encode($jsonResponse));
         }
 
         var_dump($jsonResponse);
