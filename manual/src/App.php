@@ -25,12 +25,24 @@ class App
             return;
         }
 
-        if (empty($_SESSION['token'])) {
+        $page = $_GET['page'] ?? null;
+
+        $isLoggedIn = ! empty($_SESSION['token']);
+
+        if (! $page) {
+            if ($isLoggedIn) {
+                $this->redirect('?page=videos');
+            }
             $this->redirect('?page=login');
         }
 
-        var_dump($loginApiUrl);
-        echo 'test';
+        if ($page === 'login') {
+            var_dump('loginform'); die;
+        } elseif ($page === 'videos') {
+            var_dump('videos'); die;
+        }
+
+        http_response_code(404);
     }
 
     protected function redirect(string $pageUri): void
