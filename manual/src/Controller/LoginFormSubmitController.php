@@ -23,6 +23,9 @@ class LoginFormSubmitController
         curl_setopt_array($loginCurl, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => 1,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json'
+            ],
             CURLOPT_POSTFIELDS => http_build_query([
                 'email' => $email,
                 'password' => $password
