@@ -37,6 +37,7 @@ class VideoListController
                         <th>Title</th>
                         <th>Description</th>
                         <th>Tags</th>
+                        <th>Action</th>
                     </tr>
         HTML;
 
@@ -73,6 +74,14 @@ class VideoListController
                         <td>$title</td>
                         <td><pre>$description</pre></td>
                         <td>$tagsString</td>
+                        <td>
+                        <form action="" method="GET">
+                            <input type="hidden" name="page" value="upload">
+                            <input type="hidden" name="videoId" value="$videoToPostId">
+                            <input type="text" name="youtubeVideoId" placeholder="Youtube video id">
+                            <input type="submit" name="markAsUploaded" value="Mark as uploaded">
+                        </form>
+                        </td>
                     </tr>
                 HTML;
             }
