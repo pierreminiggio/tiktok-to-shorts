@@ -21,14 +21,23 @@ class VideoListController
         $channels = $this->linkedChannelRepository->findAll();
         
         $html = <<<HTML
-            <table>
-                <tr>
-                    <th>Channel</th>
-                    <th>Video link</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Tags</th>
-                </tr>
+            <head>
+                <style>
+                    td {
+                        border: 1px black solid;
+                        padding: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <table>
+                    <tr>
+                        <th>Channel</th>
+                        <th>Video link</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Tags</th>
+                    </tr>
         HTML;
 
         foreach ($channels as $channel) {
@@ -65,12 +74,13 @@ class VideoListController
                         <td><pre>$description</pre></td>
                         <td>$tagsString</td>
                     </tr>
-            HTML;
+                HTML;
             }
         }
 
         $html .= <<<HTML
-            </table>
+                </table>
+            </body>
         HTML;
 
         echo $html;
