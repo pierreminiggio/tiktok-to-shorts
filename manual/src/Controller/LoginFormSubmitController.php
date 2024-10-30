@@ -26,7 +26,7 @@ class LoginFormSubmitController
             CURLOPT_HTTPHEADER => [
                 'Content-Type: application/json'
             ],
-            CURLOPT_POSTFIELDS => http_build_query([
+            CURLOPT_POSTFIELDS => json_encode([
                 'email' => $email,
                 'password' => $password
             ])
