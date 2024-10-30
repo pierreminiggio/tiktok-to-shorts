@@ -42,7 +42,7 @@ class App
             if ($isLoggedIn) {
                 self::redirect('?page=videos');
             }
-            (new LoginFormSubmitController())();
+            (new LoginFormSubmitController($loginApiUrl))();
             exit;
         } elseif ($page === 'videos') {
             if (! $isLoggedIn) {
