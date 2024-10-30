@@ -78,6 +78,7 @@ class VideoListController
                         <form action="" method="GET">
                             <input type="hidden" name="page" value="upload">
                             <input type="hidden" name="videoId" value="$videoToPostId">
+                            <input type="hidden" name="shortsChannelId" value="$shortsChannelId">
                             <input type="text" name="youtubeVideoId" placeholder="Youtube video id">
                             <input type="submit" name="markAsUploaded" value="Mark as uploaded">
                         </form>
