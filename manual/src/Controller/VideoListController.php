@@ -57,7 +57,7 @@ class VideoListController
 
                 $tagsString = implode(', ', $tags);
 
-                $html = <<<HTML
+                $html .= <<<HTML
                     <tr>
                         <td><a href="https://youtube.com/channel/$youtubeId" target="_blank" rel="noreferrer">$youtubeId</a></td>
                         <td><a href="$videoLink" target="_blank" rel="noreferrer">$videoLink</a></td>
