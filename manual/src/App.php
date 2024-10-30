@@ -8,9 +8,6 @@ use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormSubmitController;
 
 class App
 {
-    function __construct(private string $host)
-    {
-    }
 
     public function run(): void
     {
@@ -32,24 +29,24 @@ class App
         $isLoggedIn = ! empty($_SESSION['token']);
 
         if (! $page) {
-            $this->redirect('?page=videos');
+            self::redirect('?page=videos');
         }
 
         if ($page === 'login') {
             if ($isLoggedIn) {
-                $this->redirect('?page=videos');
+                self::redirect('?page=videos');
             }
             (new LoginFormController())();
             exit;
         } elseif ($page === 'loginFormSubmit') {
             if ($isLoggedIn) {
-                $this->redirect('?page=videos');
+                self::redirect('?page=videos');
             }
             (new LoginFormSubmitController())();
             exit;
         } elseif ($page === 'videos') {
             if (! $isLoggedIn) {
-                $this->redirect('?page=login');
+                self::redirect('?page=login');
             }
             var_dump('videos'); die;
         }
@@ -57,9 +54,9 @@ class App
         http_response_code(404);
     }
 
-    protected function redirect(string $pageUri): void
+    public static function redirect(string $pageUri): void
     {
-        header('Location: https://' . $this->host . $pageUri);
+        header('Location: https://' . $_SERVER['HTTP_HOST'] . $pageUri);
         exit;
     }
 }
