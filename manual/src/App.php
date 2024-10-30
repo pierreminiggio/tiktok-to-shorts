@@ -3,8 +3,13 @@
 namespace PierreMiniggioManual\TiktokToShorts;
 
 use PierreMiniggio\ConfigProvider\ConfigProvider;
+use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
+use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
+use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
+use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
 use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormController;
 use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormSubmitController;
+use PierreMiniggioManual\TiktokToShorts\Controller\VideoListController;
 
 class App
 {
@@ -23,6 +28,17 @@ class App
 
             return;
         }
+
+        $cacheUrl = $config['cache_url'] ?? null;
+
+        if (! $cacheUrl) {
+            http_response_code(500);
+            echo json_encode(['message' => 'Missing cache URL']);
+
+            return;
+        }
+
+        $fetcher = new DatabaseFetcher((new DatabaseConnectionFactory())->makeFromConfig($config['db']));
 
         $page = $_GET['page'] ?? null;
 
@@ -48,7 +64,12 @@ class App
             if (! $isLoggedIn) {
                 self::redirect('?page=login');
             }
-            var_dump('videos'); die;
+            (new VideoListController(
+                $cacheUrl,
+                new LinkedChannelRepository($fetcher),
+                new NonUploadedVideoRepository($fetcher)
+            ))();
+            exit;
         }
 
         http_response_code(404);

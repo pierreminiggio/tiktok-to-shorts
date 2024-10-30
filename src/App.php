@@ -18,6 +18,7 @@ use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
 use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
 use PierreMiniggio\TiktokToShorts\Repository\VideoToPostRepository;
+use PierreMiniggio\TiktokToShorts\Service\VideoInfoBuilder;
 use PierreMiniggio\VideoRenderForTiktokVideoChecker\VideoRenderForTiktokVideoChecker;
 use PierreMiniggio\YoutubeVideoUpdater\Exception\BadVideoIdException;
 use PierreMiniggio\YoutubeVideoUpdater\VideoUpdater;
@@ -62,7 +63,6 @@ class App
         $databaseFetcher = new DatabaseFetcher((new DatabaseConnectionFactory())->makeFromConfig($config['db']));
         $channelRepository = new LinkedChannelRepository($databaseFetcher);
         $nonUploadedVideoRepository = new NonUploadedVideoRepository($databaseFetcher);
-        $youtubeMaxTitleLength = 100;
         $videoToPostRepository = new VideoToPostRepository($databaseFetcher);
 
         $linkedChannels = $channelRepository->findAll();
@@ -92,74 +92,24 @@ class App
             );
             echo PHP_EOL . count($videosToPost) . ' videos to post :' . PHP_EOL;
 
+            $videoInfoBuilder = new VideoInfoBuilder();
             foreach ($videosToPost as $videoToPost) {
-                $defaultLegend = 'Most Awesome Shorts Video Ever #bestshorts';
-                $legend = $videoToPost['legend'] ? $videoToPost['legend'] : $defaultLegend;
-                $legend = str_replace(['<', '>'], ' ', $legend); // Remove unallowed chars on Youtube
 
                 $videoToPostId = $videoToPost['id'];
-
-                echo PHP_EOL . 'Posting TikTok ' . $videoToPostId . ' : ' . $legend . ' ...';
-                
-                $videoFile = $cacheDir . DIRECTORY_SEPARATOR . $videoToPostId . '.mp4';
-                $videoToPostUrl = $videoToPost['url'];
-
-                if (strlen($legend) <= $youtubeMaxTitleLength) {
-                    $title = $legend;
-                } else {
-                    $legendWords = explode(' ', $legend);
-                    if (count($legendWords) === 1) {
-                        $title = substr($legend, 0, $youtubeMaxTitleLength);
-                    } else {
-                        $title = $defaultLegend;
-                        $wipTitle = '';
-
-                        foreach ($legendWords as $legendWordIndex => $legendWord) {
-                            $newWipTitle = $wipTitle;
-
-                            if ($legendWordIndex > 0) {
-                                $newWipTitle .= ' ';
-                            }
-
-                            $newWipTitle .= $legendWord;
-
-                            if (strlen($newWipTitle) > $youtubeMaxTitleLength) {
-                                break;
-                            }
-
-                            $wipTitle = $newWipTitle;
-                        }
-
-                        if ($wipTitle !== '') {
-                            $title = $wipTitle;
-                        }
-                    }
-                }
-                
-                $description = str_replace(
-                    '[tiktok_description]',
-                    $legend,
+                $videoInfos = $videoInfoBuilder->getVideoInfos(
+                    $videoToPostId,
+                    $videoToPost['legend'] ?? null,
                     $linkedChannel['description']
                 );
+                $legend = $videoInfos->legend;
+                $title = $videoInfos->title;
+                $description = $videoInfos->description;
+                $tags = $videoInfos->tags;
 
-                $description = str_replace(
-                    '[tiktok_url]',
-                    'https://tiktok.ggio.fr/' . $videoToPostId,
-                    $description
-                );
-                
-                $tags = [];
-                $explodedOnHashTags = explode('#', $legend);
-                if (count($explodedOnHashTags) > 1) {
-                    foreach ($explodedOnHashTags as $tagStartSplitIndex => $tagStartSplitElt) {
-                        if ($tagStartSplitIndex === 0) {
-                            continue;
-                        }
-                        
-                        $tag = trim(explode(' ', $tagStartSplitElt)[0]);
-                        $tags[] = $tag;
-                    }
-                }
+                echo PHP_EOL . 'Posting TikTok ' . $videoToPostId . ' : ' . $legend . ' ...';
+
+                $videoFile = $cacheDir . DIRECTORY_SEPARATOR . $videoToPostId . '.mp4';
+                $videoToPostUrl = $videoToPost['url'];
 
                 $posted = false;
 
