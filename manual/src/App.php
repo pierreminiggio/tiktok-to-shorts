@@ -6,6 +6,10 @@ use PierreMiniggio\ConfigProvider\ConfigProvider;
 
 class App
 {
+    function __construct(private string $host)
+    {
+    }
+
     public function run(): void
     {
         $projectFolder = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
@@ -22,10 +26,16 @@ class App
         }
 
         if (empty($_SESSION['token'])) {
-            var_dump($_SERVER['REQUEST_URI']);
+            $this->redirect('?page=login');
         }
 
         var_dump($loginApiUrl);
         echo 'test';
+    }
+
+    protected function redirect(string $pageUri): void
+    {
+        header('Location: https://' . $this->host . $pageUri);
+        exit;
     }
 }
