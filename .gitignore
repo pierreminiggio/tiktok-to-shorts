@@ -1,4 +1,5 @@
-.idea
-cache
+*.idea
+cache/*
+!cache/index.php
 config.php
 vendor
