@@ -4,6 +4,7 @@ namespace PierreMiniggioManual\TiktokToShorts;
 
 use PierreMiniggio\ConfigProvider\ConfigProvider;
 use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormController;
+use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormSubmitController;
 
 class App
 {
@@ -39,6 +40,12 @@ class App
                 $this->redirect('?page=videos');
             }
             (new LoginFormController())();
+            exit;
+        } elseif ($page === 'loginFormSubmit') {
+            if ($isLoggedIn) {
+                $this->redirect('?page=videos');
+            }
+            (new LoginFormSubmitController())();
             exit;
         } elseif ($page === 'videos') {
             if (! $isLoggedIn) {
