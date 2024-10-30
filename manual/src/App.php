@@ -21,6 +21,10 @@ class App
             return;
         }
 
+        if (empty($_SESSION['token'])) {
+            var_dump($_SERVER['REQUEST_URI']);
+        }
+
         var_dump($loginApiUrl);
         echo 'test';
     }
