@@ -248,7 +248,13 @@ class App
                     curl_close($curl);
 
                     if ($httpCode !== 200) {
-                        echo 'Posting failed : ' . $response;
+                        $errorMessage = $response;
+                        
+                        if ($httpCode === 503) {
+                            $errorMessage = 'Feature not available at the moment, please try again later';
+                        }
+                        
+                        echo 'Posting failed : ' . $errorMessage;
                         
                         if (str_contains($response, 'TimeoutError')) {
                             $alreadyPostedChannelIds[] = $shortsChannelId;
