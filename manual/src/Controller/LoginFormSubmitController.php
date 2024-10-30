@@ -46,10 +46,11 @@ class LoginFormSubmitController
             throw new Exception('No token, json response : ' . json_encode($jsonResponse));
         }
 
-        var_dump($jsonResponse);
+        $_SESSION['token'] = $jsonResponse['token'];
+        $_SESSION['email'] = $jsonResponse['email'];
+        $_SESSION['name'] = $jsonResponse['name'];
+        $_SESSION['first_name'] = $jsonResponse['first_name'];
 
-        echo <<<HTML
-            Login form submit controller
-        HTML;
+        App::redirect('?page=videos');
     }
 }
