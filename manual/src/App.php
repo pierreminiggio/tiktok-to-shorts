@@ -3,6 +3,7 @@
 namespace PierreMiniggioManual\TiktokToShorts;
 
 use PierreMiniggio\ConfigProvider\ConfigProvider;
+use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormController;
 
 class App
 {
@@ -30,15 +31,19 @@ class App
         $isLoggedIn = ! empty($_SESSION['token']);
 
         if (! $page) {
-            if ($isLoggedIn) {
-                $this->redirect('?page=videos');
-            }
-            $this->redirect('?page=login');
+            $this->redirect('?page=videos');
         }
 
         if ($page === 'login') {
-            var_dump('loginform'); die;
+            if ($isLoggedIn) {
+                $this->redirect('?page=videos');
+            }
+            (new LoginFormController())();
+            exit;
         } elseif ($page === 'videos') {
+            if (! $isLoggedIn) {
+                $this->redirect('?page=login');
+            }
             var_dump('videos'); die;
         }
 
