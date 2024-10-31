@@ -62,6 +62,16 @@ class App
             }
             (new LoginFormSubmitController($loginApiUrl))();
             exit;
+        } elseif ($page === 'logout') {
+            if (! $isLoggedIn) {
+                self::redirect('?page=login');
+            }
+
+            unset($_SESSION['token']);
+            unset($_SESSION['email']);
+            unset($_SESSION['name']);
+            unset($_SESSION['first_name']);
+            self::redirect('?page=login');
         } elseif ($page === 'videos') {
             if (! $isLoggedIn) {
                 self::redirect('?page=login');

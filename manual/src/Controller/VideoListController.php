@@ -30,6 +30,10 @@ class VideoListController
                 </style>
             </head>
             <body>
+                <form action="" method="GET">
+                    <input type="hidden" name="page" value="logout">
+                    <input type="submit" name="logout" value="Logout">
+                </form>
                 <table>
                     <tr>
                         <th>Channel</th>
