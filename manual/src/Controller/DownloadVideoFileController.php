@@ -2,12 +2,12 @@
 
 namespace PierreMiniggioManual\TiktokToShorts\Controller;
 
-use PierreMiniggio\TiktokToShorts\Repository\VideoToPostRepository;
+use PierreMiniggio\TiktokToShorts\Repository\VideoRepository;
 use PierreMiniggioManual\TiktokToShorts\App;
 
 class DownloadVideoFileController
 {
-    public function __construct(private VideoToPostRepository $videoToPostRepository)
+    public function __construct(private VideoRepository $videoRepository)
     {
     }
     
@@ -19,6 +19,15 @@ class DownloadVideoFileController
             App::redirect('?page=videos');
         }
 
-        var_dump($videoId);
+        $video = $this->videoRepository->find($videoId);
+
+        if (! $video) {
+            http_response_code(404);
+            echo json_encode(['message' => 'No video for id ' . $videoId]);
+
+            return;
+        }
+
+        var_dump($video);
     }
 }
