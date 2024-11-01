@@ -8,6 +8,7 @@ use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
 use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
 use PierreMiniggio\TiktokToShorts\Repository\VideoToPostRepository;
+use PierreMiniggioManual\TiktokToShorts\Controller\DownloadVideoFileController;
 use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormController;
 use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormSubmitController;
 use PierreMiniggioManual\TiktokToShorts\Controller\UploadFormSubmitController;
@@ -84,6 +85,13 @@ class App
                 new LinkedChannelRepository($fetcher),
                 new NonUploadedVideoRepository($fetcher)
             ))();
+            exit;
+        } elseif ($page === 'downloadFile') {
+            if (! $isLoggedIn) {
+                self::redirect('?page=login');
+            }
+
+            (new DownloadVideoFileController(new VideoToPostRepository($fetcher)))();
             exit;
         } elseif ($page === 'upload') {
             if (! $isLoggedIn) {
