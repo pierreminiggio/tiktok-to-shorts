@@ -3,8 +3,8 @@
 namespace PierreMiniggioManual\TiktokToShorts\Controller;
 
 use PierreMiniggio\TiktokToShorts\Repository\VideoRepository;
+use PierreMiniggio\TiktokToShorts\Service\VideoDownloader;
 use PierreMiniggioManual\TiktokToShorts\App;
-use VideoDownloader;
 
 class DownloadVideoFileController
 {

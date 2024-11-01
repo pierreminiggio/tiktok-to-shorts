@@ -1,5 +1,7 @@
 <?php
 
+namespace PierreMiniggio\TiktokToShorts\Service;
+
 use PierreMiniggio\MultiSourcesTiktokDownloader\MultiSourcesTiktokDownloader;
 
 class VideoDownloader

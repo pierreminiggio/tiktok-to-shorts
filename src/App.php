@@ -18,11 +18,11 @@ use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
 use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
 use PierreMiniggio\TiktokToShorts\Repository\VideoToPostRepository;
+use PierreMiniggio\TiktokToShorts\Service\VideoDownloader;
 use PierreMiniggio\TiktokToShorts\Service\VideoInfoBuilder;
 use PierreMiniggio\VideoRenderForTiktokVideoChecker\VideoRenderForTiktokVideoChecker;
 use PierreMiniggio\YoutubeVideoUpdater\Exception\BadVideoIdException;
 use PierreMiniggio\YoutubeVideoUpdater\VideoUpdater;
-use VideoDownloader;
 
 class App
 {

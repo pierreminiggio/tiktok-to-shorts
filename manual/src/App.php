@@ -11,12 +11,12 @@ use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
 use PierreMiniggio\TiktokToShorts\Repository\VideoRepository;
 use PierreMiniggio\TiktokToShorts\Repository\VideoToPostRepository;
+use PierreMiniggio\TiktokToShorts\Service\VideoDownloader;
 use PierreMiniggioManual\TiktokToShorts\Controller\DownloadVideoFileController;
 use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormController;
 use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormSubmitController;
 use PierreMiniggioManual\TiktokToShorts\Controller\UploadFormSubmitController;
 use PierreMiniggioManual\TiktokToShorts\Controller\VideoListController;
-use VideoDownloader;
 
 class App
 {
