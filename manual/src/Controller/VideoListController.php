@@ -10,6 +10,7 @@ class VideoListController
 {
     public function __construct(
         private string $cacheUrl,
+        private string $cacheFolder,
         private LinkedChannelRepository $linkedChannelRepository,
         private NonUploadedVideoRepository $nonUploadedVideoRepository
     )
@@ -19,7 +20,7 @@ class VideoListController
     public function __invoke()
     {
         $channels = $this->linkedChannelRepository->findAll();
-        
+
         $html = <<<HTML
             <head>
                 <style>
@@ -68,13 +69,24 @@ class VideoListController
                 $tags = $videoInfos->tags;
 
                 $videoLink = $this->cacheUrl . '/' . $videoToPostId . '.mp4';
+                $videoFile = $this->cacheFolder . $videoToPostId . '.mp4';
+
+                if (file_exists($videoFile)) {
+                    $videoFileHtml = <<<HTML
+                        <a href="$videoLink" target="_blank" rel="noreferrer">$videoLink</a>
+                    HTML;
+                } else {
+                    $videoFileHtml = <<<HTML
+                        <a href="/page=downloadFile&videoId=$videoToPostId" target="_blank">Download</a>
+                    HTML;
+                }
 
                 $tagsString = implode(', ', $tags);
 
                 $html .= <<<HTML
                     <tr>
                         <td><a href="https://youtube.com/channel/$youtubeId" target="_blank" rel="noreferrer">$youtubeId</a></td>
-                        <td><a href="$videoLink" target="_blank" rel="noreferrer">$videoLink</a></td>
+                        <td>$videoFileHtml</td>
                         <td>$title</td>
                         <td><pre>$description</pre></td>
                         <td>$tagsString</td>

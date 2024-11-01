@@ -40,6 +40,8 @@ class App
             return;
         }
 
+        $cacheFolder = $projectFolder . 'cache' . DIRECTORY_SEPARATOR;
+
         $fetcher = new DatabaseFetcher((new DatabaseConnectionFactory())->makeFromConfig($config['db']));
 
         $page = $_GET['page'] ?? null;
@@ -78,6 +80,7 @@ class App
             }
             (new VideoListController(
                 $cacheUrl,
+                $cacheFolder,
                 new LinkedChannelRepository($fetcher),
                 new NonUploadedVideoRepository($fetcher)
             ))();
