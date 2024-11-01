@@ -4,6 +4,8 @@ namespace PierreMiniggioManual\TiktokToShorts;
 
 use PierreMiniggio\ConfigProvider\ConfigProvider;
 use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
+use PierreMiniggio\MultiSourcesTiktokDownloader\MultiSourcesTiktokDownloader;
+use PierreMiniggio\MultiSourcesTiktokDownloader\Repository;
 use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
 use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
@@ -14,6 +16,7 @@ use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormController;
 use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormSubmitController;
 use PierreMiniggioManual\TiktokToShorts\Controller\UploadFormSubmitController;
 use PierreMiniggioManual\TiktokToShorts\Controller\VideoListController;
+use VideoDownloader;
 
 class App
 {
@@ -92,13 +95,23 @@ class App
                 self::redirect('?page=login');
             }
 
-            (new DownloadVideoFileController(new VideoRepository($fetcher)))();
+            $snapTikApiActionConfig = $config['snap_tik_api_action'] ?? null;
+
+            $downloader = MultiSourcesTiktokDownloader::buildSelf(
+                $snapTikApiActionConfig ? new Repository(...$snapTikApiActionConfig) : null
+            );
+
+            (new DownloadVideoFileController(
+                $cacheFolder,
+                new VideoRepository($fetcher),
+                new VideoDownloader($downloader)
+            ))();
             exit;
         } elseif ($page === 'upload') {
             if (! $isLoggedIn) {
                 self::redirect('?page=login');
             }
-
+            
             (new UploadFormSubmitController(new VideoToPostRepository($fetcher)))();
             exit;
         }

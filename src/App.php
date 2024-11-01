@@ -22,6 +22,7 @@ use PierreMiniggio\TiktokToShorts\Service\VideoInfoBuilder;
 use PierreMiniggio\VideoRenderForTiktokVideoChecker\VideoRenderForTiktokVideoChecker;
 use PierreMiniggio\YoutubeVideoUpdater\Exception\BadVideoIdException;
 use PierreMiniggio\YoutubeVideoUpdater\VideoUpdater;
+use VideoDownloader;
 
 class App
 {
@@ -299,11 +300,7 @@ class App
             return;
         }
 
-        $temporaryVideoFile = $downloader->download($videoToPostUrl);
-        rename($temporaryVideoFile, $videoFile);
-
-        if (! file_exists($videoFile)) {
-            throw new Exception('Missing video file');
-        }
+        $videoDownloader = new VideoDownloader($downloader);
+        $videoDownloader->download($videoFile, $videoToPostUrl);
     }
 }

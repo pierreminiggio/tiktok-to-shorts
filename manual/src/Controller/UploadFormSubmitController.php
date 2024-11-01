@@ -7,7 +7,9 @@ use PierreMiniggioManual\TiktokToShorts\App;
 
 class UploadFormSubmitController
 {
-    public function __construct(private VideoToPostRepository $videoToPostRepository)
+    public function __construct(
+        private VideoToPostRepository $videoToPostRepository
+    )
     {
     }
     
