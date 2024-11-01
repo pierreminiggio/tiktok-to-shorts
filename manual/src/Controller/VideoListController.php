@@ -77,7 +77,7 @@ class VideoListController
                     HTML;
                 } else {
                     $videoFileHtml = <<<HTML
-                        <a href="/page=downloadFile&videoId=$videoToPostId" target="_blank">Download</a>
+                        <a href="/?page=downloadFile&videoId=$videoToPostId" target="_blank">Download</a>
                     HTML;
                 }
 
