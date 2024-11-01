@@ -18,6 +18,7 @@ class DownloadVideoFileController
     
     public function __invoke()
     {
+        set_time_limit(0);
         $videoId = $_GET['videoId'] ?? null;
 
         if (! $videoId) {

@@ -2,6 +2,7 @@
 
 namespace PierreMiniggio\TiktokToShorts\Service;
 
+use Exception;
 use PierreMiniggio\MultiSourcesTiktokDownloader\MultiSourcesTiktokDownloader;
 
 class VideoDownloader
