@@ -53,5 +53,8 @@ class DownloadVideoFileController
         }
 
         $this->downloader->download($videoFilePath, $videoUrl);
+
+        http_response_code(201);
+        echo json_encode(['message' => 'Video file downloaded for video id ' . $videoId]);
     }
 }
