@@ -112,7 +112,10 @@ class App
                 self::redirect('?page=login');
             }
             
-            (new UploadFormSubmitController(new VideoToPostRepository($fetcher)))();
+            (new UploadFormSubmitController(
+                $cacheFolder,
+                new VideoToPostRepository($fetcher)
+            ))();
             exit;
         }
 

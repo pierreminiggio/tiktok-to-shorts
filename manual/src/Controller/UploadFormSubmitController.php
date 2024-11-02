@@ -8,6 +8,7 @@ use PierreMiniggioManual\TiktokToShorts\App;
 class UploadFormSubmitController
 {
     public function __construct(
+        private string $cacheFolder,
         private VideoToPostRepository $videoToPostRepository
     )
     {
@@ -28,6 +29,12 @@ class UploadFormSubmitController
             $shortsChannelId,
             $videoId
         );
+
+        $videoFile = $this->cacheFolder . $videoId . '.mp4';
+
+        if (file_exists($videoFile)) {
+            unlink($videoFile);
+        }
 
         App::redirect('?page=videos');
     }
