@@ -43,7 +43,7 @@ class DownloadVideoFileController
             return;
         }
 
-        $videoFilePath = $this->cacheFolder . $videoId . '.mp4.';
+        $videoFilePath = $this->cacheFolder . $videoId . '.mp4';
 
         if (file_exists($videoFilePath)) {
             http_response_code(409);
