@@ -67,4 +67,25 @@ class ShortsValueForTikTokVideoRepository
             ]
         );
     }
+
+    public function findForVideo(int $tiktokVideoId): array
+    {
+        $findValueQuery = [
+            $this->fetcher
+                ->createQuery('shorts_values_for_tiktok_video')
+                ->select('field_name, field_value')
+                ->where('tiktok_id = :tiktok_id')
+            ,
+            ['tiktok_id' => $tiktokVideoId]
+        ];
+        $queriedValues = $this->fetcher->query(...$findValueQuery);
+
+        $alteredFields = [];
+
+        foreach ($queriedValues as $queriedValue) {
+            $alteredFields[$queriedValue['field_name']] = $queriedValue['field_value'];
+        }
+
+        return $alteredFields;
+    }
 }

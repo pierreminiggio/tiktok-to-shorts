@@ -4,6 +4,7 @@ namespace PierreMiniggioManual\TiktokToShorts\Controller;
 
 use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
+use PierreMiniggio\TiktokToShorts\Repository\ShortsValueForTikTokVideoRepository;
 use PierreMiniggio\TiktokToShorts\Service\VideoInfoBuilder;
 
 class VideoListController
@@ -12,7 +13,8 @@ class VideoListController
         private string $cacheUrl,
         private string $cacheFolder,
         private LinkedChannelRepository $linkedChannelRepository,
-        private NonUploadedVideoRepository $nonUploadedVideoRepository
+        private NonUploadedVideoRepository $nonUploadedVideoRepository,
+        private VideoInfoBuilder $videoInfoBuilder
     )
     {
     }
@@ -56,10 +58,9 @@ class VideoListController
                 10
             );
 
-            $videoInfoBuilder = new VideoInfoBuilder();
             foreach ($videosToPost as $videoToPost) {
                 $videoToPostId = $videoToPost['id'];
-                $videoInfos = $videoInfoBuilder->getVideoInfos(
+                $videoInfos = $this->videoInfoBuilder->getVideoInfos(
                     $videoToPostId,
                     $videoToPost['legend'] ?? null,
                     $channel['description']

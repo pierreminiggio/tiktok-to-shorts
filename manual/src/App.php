@@ -13,6 +13,7 @@ use PierreMiniggio\TiktokToShorts\Repository\ShortsValueForTikTokVideoRepository
 use PierreMiniggio\TiktokToShorts\Repository\VideoRepository;
 use PierreMiniggio\TiktokToShorts\Repository\VideoToPostRepository;
 use PierreMiniggio\TiktokToShorts\Service\VideoDownloader;
+use PierreMiniggio\TiktokToShorts\Service\VideoInfoBuilder;
 use PierreMiniggioManual\TiktokToShorts\Controller\DownloadVideoFileController;
 use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormController;
 use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormSubmitController;
@@ -89,7 +90,8 @@ class App
                 $cacheUrl,
                 $cacheFolder,
                 new LinkedChannelRepository($fetcher),
-                new NonUploadedVideoRepository($fetcher)
+                new NonUploadedVideoRepository($fetcher),
+                new VideoInfoBuilder(new ShortsValueForTikTokVideoRepository($fetcher))
             ))();
             exit;
         } elseif ($page === 'updateValue') {

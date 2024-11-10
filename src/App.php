@@ -17,6 +17,7 @@ use PierreMiniggio\MultiSourcesTiktokDownloader\Repository;
 use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
 use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
+use PierreMiniggio\TiktokToShorts\Repository\ShortsValueForTikTokVideoRepository;
 use PierreMiniggio\TiktokToShorts\Repository\VideoToPostRepository;
 use PierreMiniggio\TiktokToShorts\Service\VideoDownloader;
 use PierreMiniggio\TiktokToShorts\Service\VideoInfoBuilder;
@@ -94,9 +95,8 @@ class App
             );
             echo PHP_EOL . count($videosToPost) . ' videos to post :' . PHP_EOL;
 
-            $videoInfoBuilder = new VideoInfoBuilder();
+            $videoInfoBuilder = new VideoInfoBuilder(new ShortsValueForTikTokVideoRepository($databaseFetcher));
             foreach ($videosToPost as $videoToPost) {
-
                 $videoToPostId = $videoToPost['id'];
                 $videoInfos = $videoInfoBuilder->getVideoInfos(
                     $videoToPostId,

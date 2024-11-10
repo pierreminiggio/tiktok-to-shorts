@@ -3,9 +3,17 @@
 namespace PierreMiniggio\TiktokToShorts\Service;
 
 use PierreMiniggio\TiktokToShorts\Entity\VideoInfo;
+use PierreMiniggio\TiktokToShorts\Repository\ShortsValueForTikTokVideoRepository;
 
 class VideoInfoBuilder
 {
+
+    public function __construct(
+        private ShortsValueForTikTokVideoRepository $shortsValueForTikTokVideoRepository
+    )
+    {
+    }
+
     public function getVideoInfos(
         int $videoToPostId,
         ?string $legend,
@@ -73,6 +81,20 @@ class VideoInfoBuilder
                 $tag = trim(explode(' ', $tagStartSplitElt)[0]);
                 $tags[] = $tag;
             }
+        }
+
+        $alteredFields = $this->shortsValueForTikTokVideoRepository->findForVideo($videoToPostId);
+
+        if (! empty($alteredFields['title'])) {
+            $title = $alteredFields['title'];
+        }
+
+        if (! empty($alteredFields['description'])) {
+            $description = $alteredFields['description'];
+        }
+
+        if (! empty($alteredFields['tags'])) {
+            $tags = explode(', ', $alteredFields['tags']);
         }
 
         return new VideoInfo($legend, $title, $description, $tags);
