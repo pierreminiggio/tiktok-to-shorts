@@ -40,7 +40,7 @@ class ShortsValueForTikTokVideoRepository
                     ->createQuery('shorts_values_for_tiktok_video')
                     ->insertInto(
                         'tiktok_id, field_name, field_value',
-                        ':tiktok_id, :field_name, : field_value'
+                        ':tiktok_id, :field_name, :field_value'
                     )
                 ,
                 $insertParams
