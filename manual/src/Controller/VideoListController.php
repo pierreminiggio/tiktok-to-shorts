@@ -85,25 +85,27 @@ class VideoListController
 
                 $tagsString = implode(', ', $tags);
 
+                $textAreaStyle = 'display: block; margin-bottom: 10px;';
+
                 $html .= <<<HTML
                     <tr>
                         <td><a href="https://youtube.com/channel/$youtubeId" target="_blank" rel="noreferrer">$youtubeId</a></td>
                         <td>$videoFileHtml</td>
                         <td>
                             <form action="?page=updateValue&videoId=$videoToPostId" method="POST">
-                                <textarea name="title">$title</textarea>
+                                <textarea name="title" style="$textAreaStyle">$title</textarea>
                                 <input type="submit" name="update" value="Update">
                             </form>
                         </td>
                         <td>
                             <form action="?page=updateValue&videoId=$videoToPostId" method="POST">
-                                <textarea name="description">$description</textarea>
+                                <textarea name="description" style="$textAreaStyle min-height: 300px; min-width: 400px;">$description</textarea>
                                 <input type="submit" name="update" value="Update">
                             </form>
                         </td>
                         <td>
                             <form action="?page=updateValue&videoId=$videoToPostId" method="POST">
-                                <textarea name="tags">$tagsString</textarea>
+                                <textarea name="tags" style="$textAreaStyle">$tagsString</textarea>
                                 <input type="submit" name="update" value="Update">
                             </form>
                         </td>
