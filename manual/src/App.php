@@ -15,6 +15,7 @@ use PierreMiniggio\TiktokToShorts\Service\VideoDownloader;
 use PierreMiniggioManual\TiktokToShorts\Controller\DownloadVideoFileController;
 use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormController;
 use PierreMiniggioManual\TiktokToShorts\Controller\LoginFormSubmitController;
+use PierreMiniggioManual\TiktokToShorts\Controller\UpdateValueFormSubmitController;
 use PierreMiniggioManual\TiktokToShorts\Controller\UploadFormSubmitController;
 use PierreMiniggioManual\TiktokToShorts\Controller\VideoListController;
 
@@ -94,8 +95,10 @@ class App
             if (! $isLoggedIn) {
                 self::redirect('?page=login');
             }
-            var_dump($_GET);
-            var_dump($_POST); die;
+            
+            (new UpdateValueFormSubmitController(
+                new VideoRepository($fetcher)
+            ))();
             exit;
         } elseif ($page === 'downloadFile') {
             if (! $isLoggedIn) {
