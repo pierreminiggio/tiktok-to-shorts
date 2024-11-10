@@ -137,6 +137,16 @@ ALTER TABLE `shorts_channel`  ADD `heropost_login` VARCHAR(255) NOT NULL  AFTER 
 
 ALTER TABLE `shorts_channel` CHANGE `description` `description` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL;
 
+CREATE TABLE `shorts_values_for_tiktok_video` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `tiktok_id` INT NOT NULL,
+  `field_name` VARCHAR(15) NOT NULL,
+  `field_value` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

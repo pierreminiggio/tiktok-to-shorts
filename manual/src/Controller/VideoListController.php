@@ -89,22 +89,23 @@ class VideoListController
                         <td><a href="https://youtube.com/channel/$youtubeId" target="_blank" rel="noreferrer">$youtubeId</a></td>
                         <td>$videoFileHtml</td>
                         <td>
-                            <form action="" method="GET">
-                                <input type="hidden" name="page" value="updateText">
-                                <input type="hidden" name="videoId" value="$videoToPostId">
+                            <form action="?page=updateText&videoId=$videoToPostId" method="POST">
                                 <textarea name="title">$title</textarea>
                                 <input type="submit" name="update" value="Update">
                             </form>
                         </td>
                         <td>
-                            <form action="" method="GET">
-                            <input type="hidden" name="page" value="updateDescription">
-                            <input type="hidden" name="videoId" value="$videoToPostId">
-                            <textarea name="description">$description</textarea>
-                            <input type="submit" name="update" value="Update">
-                        </form>
+                            <form action="?page=updateDescription&videoId=$videoToPostId" method="GET">
+                                <textarea name="description">$description</textarea>
+                                <input type="submit" name="update" value="Update">
+                            </form>
                         </td>
-                        <td>$tagsString</td>
+                        <td>
+                            <form action="?page=updateTags&videoId=$videoToPostId" method="GET">
+                                <textarea name="tags">$tagsString</textarea>
+                                <input type="submit" name="update" value="Update">
+                            </form>
+                        </td>
                         <td>
                             <form action="" method="GET">
                                 <input type="hidden" name="page" value="upload">
