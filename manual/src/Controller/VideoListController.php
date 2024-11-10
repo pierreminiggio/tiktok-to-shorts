@@ -70,15 +70,21 @@ class VideoListController
                 $description = $videoInfos->description;
                 $tags = $videoInfos->tags;
 
+                $sourceVideoLink = VideoInfoBuilder::getSourceVideoLink($videoToPostId);
+                $videoFileHtml = <<<HTML
+                    <a href="$sourceVideoLink" target="_blank">Source : $videoToPostId</a>
+                    <br><br>
+                HTML;
+
                 $videoLink = $this->cacheUrl . '/' . $videoToPostId . '.mp4';
                 $videoFile = $this->cacheFolder . $videoToPostId . '.mp4';
 
                 if (file_exists($videoFile)) {
-                    $videoFileHtml = <<<HTML
+                    $videoFileHtml .= <<<HTML
                         <a href="$videoLink" target="_blank" rel="noreferrer">$videoLink</a>
                     HTML;
                 } else {
-                    $videoFileHtml = <<<HTML
+                    $videoFileHtml .= <<<HTML
                         <a href="/?page=downloadFile&videoId=$videoToPostId" target="_blank">Download</a>
                     HTML;
                 }

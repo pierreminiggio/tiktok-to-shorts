@@ -14,6 +14,11 @@ class VideoInfoBuilder
     {
     }
 
+    public static function getSourceVideoLink(int $videoToPostId): string
+    {
+        return 'https://tiktok.ggio.fr/' . $videoToPostId;
+    }
+
     public function getVideoInfos(
         int $videoToPostId,
         ?string $legend,
@@ -66,7 +71,7 @@ class VideoInfoBuilder
 
         $description = str_replace(
             '[tiktok_url]',
-            'https://tiktok.ggio.fr/' . $videoToPostId,
+            self::getSourceVideoLink($videoToPostId),
             $description
         );
         
