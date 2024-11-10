@@ -95,13 +95,13 @@ class VideoListController
                             </form>
                         </td>
                         <td>
-                            <form action="?page=updateValue&videoId=$videoToPostId" method="GET">
+                            <form action="?page=updateValue&videoId=$videoToPostId" method="POST">
                                 <textarea name="description">$description</textarea>
                                 <input type="submit" name="update" value="Update">
                             </form>
                         </td>
                         <td>
-                            <form action="?page=updateValue&videoId=$videoToPostId" method="GET">
+                            <form action="?page=updateValue&videoId=$videoToPostId" method="POST">
                                 <textarea name="tags">$tagsString</textarea>
                                 <input type="submit" name="update" value="Update">
                             </form>
