@@ -117,7 +117,7 @@ class VideoListController
                                 <input type="text" name="youtubeVideoId" placeholder="Youtube video id">
                                 <input type="submit" name="markAsUploaded" value="Mark as uploaded">
                             </form>
-                            <form action="" method="GET">
+                            <form action="" method="GET" style="margin-top: 80px;">
                                 <input type="hidden" name="page" value="unpostable">
                                 <input type="hidden" name="videoId" value="$videoToPostId">
                                 <input type="submit" name="markAsUnpostable" value="Mark as unpostable">
