@@ -96,7 +96,14 @@ class VideoListController
                                 <input type="submit" name="update" value="Update">
                             </form>
                         </td>
-                        <td><pre>$description</pre></td>
+                        <td>
+                            <form action="" method="GET">
+                            <input type="hidden" name="page" value="updateDescription">
+                            <input type="hidden" name="videoId" value="$videoToPostId">
+                            <textarea name="description">$description</textarea>
+                            <input type="submit" name="update" value="Update">
+                        </form>
+                        </td>
                         <td>$tagsString</td>
                         <td>
                             <form action="" method="GET">
