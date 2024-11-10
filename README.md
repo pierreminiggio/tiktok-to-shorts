@@ -147,6 +147,12 @@ CREATE TABLE `shorts_values_for_tiktok_video` (
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
+CREATE TABLE `tiktok_video_unpostable_on_shorts` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `tiktok_id` INT NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
