@@ -51,6 +51,7 @@ class UpdateValueFormSubmitController
             }
 
             $this->shortsValueForTikTokVideoRepository->insertOrUpdateField($videoId, $fieldName, $newFieldValue);
+            $updatedFields[] = $fieldName;
         }
 
         if (! $updatedFields) {
