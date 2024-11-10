@@ -2,7 +2,7 @@
 
 namespace PierreMiniggioManual\TiktokToShorts\Controller;
 
-use PierreMiniggio\TiktokToShorts\Repository\ShortsValueForTikTokVideo;
+use PierreMiniggio\TiktokToShorts\Repository\ShortsValueForTikTokVideoRepository;
 use PierreMiniggio\TiktokToShorts\Repository\VideoRepository;
 use PierreMiniggioManual\TiktokToShorts\App;
 
@@ -10,7 +10,7 @@ class UpdateValueFormSubmitController
 {
     public function __construct(
         private VideoRepository $videoRepository,
-        private ShortsValueForTikTokVideo $shortsValueForTikTokVideo
+        private ShortsValueForTikTokVideoRepository $shortsValueForTikTokVideoRepository
     )
     {
     }
@@ -50,7 +50,7 @@ class UpdateValueFormSubmitController
                 continue;
             }
 
-            $this->shortsValueForTikTokVideo->insertOrUpdateField($videoId, $fieldName, $newFieldValue);
+            $this->shortsValueForTikTokVideoRepository->insertOrUpdateField($videoId, $fieldName, $newFieldValue);
         }
 
         if (! $updatedFields) {

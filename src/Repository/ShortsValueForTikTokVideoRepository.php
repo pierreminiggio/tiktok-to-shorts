@@ -4,7 +4,7 @@ namespace PierreMiniggio\TiktokToShorts\Repository;
 
 use PierreMiniggio\DatabaseFetcher\DatabaseFetcher;
 
-class ShortsValueForTikTokVideo
+class ShortsValueForTikTokVideoRepository
 {
     public function __construct(private DatabaseFetcher $fetcher)
     {}

@@ -9,7 +9,7 @@ use PierreMiniggio\MultiSourcesTiktokDownloader\Repository;
 use PierreMiniggio\TiktokToShorts\Connection\DatabaseConnectionFactory;
 use PierreMiniggio\TiktokToShorts\Repository\LinkedChannelRepository;
 use PierreMiniggio\TiktokToShorts\Repository\NonUploadedVideoRepository;
-use PierreMiniggio\TiktokToShorts\Repository\ShortsValueForTikTokVideo;
+use PierreMiniggio\TiktokToShorts\Repository\ShortsValueForTikTokVideoRepository;
 use PierreMiniggio\TiktokToShorts\Repository\VideoRepository;
 use PierreMiniggio\TiktokToShorts\Repository\VideoToPostRepository;
 use PierreMiniggio\TiktokToShorts\Service\VideoDownloader;
@@ -99,7 +99,7 @@ class App
             
             (new UpdateValueFormSubmitController(
                 new VideoRepository($fetcher),
-                new ShortsValueForTikTokVideo($fetcher)
+                new ShortsValueForTikTokVideoRepository($fetcher)
             ))();
             exit;
         } elseif ($page === 'downloadFile') {
