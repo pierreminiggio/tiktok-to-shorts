@@ -31,10 +31,9 @@ class ShortsValueForTikTokVideoRepository
         $queriedIds = $this->fetcher->query(...$findValueQuery);
         
         if (! $queriedIds) {
-            $insertParams = [
-                ...$valueQueryParams,
+            $insertParams = array_merge($valueQueryParams, [
                 'field_value' => $fieldValue
-            ];
+            ]);
 
             $this->fetcher->exec(
                 $this->fetcher
