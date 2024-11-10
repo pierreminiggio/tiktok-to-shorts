@@ -42,8 +42,16 @@ class UpdateValueFormSubmitController
         }
 
         echo '<pre>';
-        var_dump($_GET);
-        var_dump($_POST);
+
+        foreach (compact($title, $description, $tags) as $fieldName => $newFieldValue) {
+            if (! $newFieldValue) {
+                continue;
+            }
+
+            var_dump($fieldName);
+            var_dump($newFieldValue);
+        }
+
         echo '</pre>';
         die;
 
