@@ -88,17 +88,24 @@ class VideoListController
                     <tr>
                         <td><a href="https://youtube.com/channel/$youtubeId" target="_blank" rel="noreferrer">$youtubeId</a></td>
                         <td>$videoFileHtml</td>
-                        <td>$title</td>
+                        <td>
+                            <form action="" method="GET">
+                                <input type="hidden" name="page" value="updateText">
+                                <input type="hidden" name="videoId" value="$videoToPostId">
+                                <textarea name="title">$title</textarea>
+                                <input type="submit" name="update" value="Update">
+                            </form>
+                        </td>
                         <td><pre>$description</pre></td>
                         <td>$tagsString</td>
                         <td>
-                        <form action="" method="GET">
-                            <input type="hidden" name="page" value="upload">
-                            <input type="hidden" name="videoId" value="$videoToPostId">
-                            <input type="hidden" name="shortsChannelId" value="$shortsChannelId">
-                            <input type="text" name="youtubeVideoId" placeholder="Youtube video id">
-                            <input type="submit" name="markAsUploaded" value="Mark as uploaded">
-                        </form>
+                            <form action="" method="GET">
+                                <input type="hidden" name="page" value="upload">
+                                <input type="hidden" name="videoId" value="$videoToPostId">
+                                <input type="hidden" name="shortsChannelId" value="$shortsChannelId">
+                                <input type="text" name="youtubeVideoId" placeholder="Youtube video id">
+                                <input type="submit" name="markAsUploaded" value="Mark as uploaded">
+                            </form>
                         </td>
                     </tr>
                 HTML;
