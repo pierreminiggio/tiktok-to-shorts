@@ -26,12 +26,20 @@ class NonUploadedVideoRepository
         );
         $postedShortsVideoIds = array_map(fn ($entry) => (int) $entry['id'], $postedShortsVideoIds);
 
+        $unpostableTikTokVideoIds = $this->fetcher->query(
+            $this->fetcher->createQuery('tiktok_video_unpostable_on_shorts')->select('tiktok_id')
+        );
+        $unpostableTikTokVideoIds = array_map(fn ($entry) => (int) $entry['tiktok_id'], $unpostableTikTokVideoIds);
+
         $query = $this->fetcher
             ->createQuery('tiktok_video as t')
             ->select('t.id, t.legend, t.tiktok_url as url')
             ->where('t.account_id = :channel_id' . (
                 $postedShortsVideoIds ? ' AND svtv.id IS NULL' : ''
-            ))
+            ) . (
+                    $unpostableTikTokVideoIds ? (' AND t.id NOT IN  (' . implode(', ', $unpostableTikTokVideoIds) . ')') : ''
+                )
+            )
             ->limit($limit)
         ;
 
