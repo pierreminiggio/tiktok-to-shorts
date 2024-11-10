@@ -90,6 +90,13 @@ class App
                 new NonUploadedVideoRepository($fetcher)
             ))();
             exit;
+        } elseif ($page === 'updateValue') {
+            if (! $isLoggedIn) {
+                self::redirect('?page=login');
+            }
+            var_dump($_GET);
+            var_dump($_POST); die;
+            exit;
         } elseif ($page === 'downloadFile') {
             if (! $isLoggedIn) {
                 self::redirect('?page=login');
