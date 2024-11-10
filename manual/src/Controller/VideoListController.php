@@ -52,7 +52,8 @@ class VideoListController
 
             $videosToPost = $this->nonUploadedVideoRepository->findByShortsAndTiktokChannelIds(
                 $shortsChannelId,
-                $channel['t_id']
+                $channel['t_id'],
+                10
             );
 
             $videoInfoBuilder = new VideoInfoBuilder();

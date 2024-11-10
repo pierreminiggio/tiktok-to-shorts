@@ -89,7 +89,8 @@ class App
 
             $videosToPost = $nonUploadedVideoRepository->findByShortsAndTiktokChannelIds(
                 $shortsChannelId,
-                $linkedChannel['t_id']
+                $linkedChannel['t_id'],
+                1
             );
             echo PHP_EOL . count($videosToPost) . ' videos to post :' . PHP_EOL;
 

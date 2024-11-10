@@ -11,7 +11,8 @@ class NonUploadedVideoRepository
 
     public function findByShortsAndTiktokChannelIds(
         int $shortsChannelId,
-        int $tiktokChannelId
+        int $tiktokChannelId,
+        int $limit
     ): array
     {
         $postedShortsVideoIds = $this->fetcher->query(
@@ -31,7 +32,7 @@ class NonUploadedVideoRepository
             ->where('t.account_id = :channel_id' . (
                 $postedShortsVideoIds ? ' AND svtv.id IS NULL' : ''
             ))
-            ->limit(1)
+            ->limit($limit)
         ;
 
         if ($postedShortsVideoIds) {
