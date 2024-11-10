@@ -43,7 +43,7 @@ class UpdateValueFormSubmitController
 
         echo '<pre>';
 
-        foreach (compact($title, $description, $tags) as $fieldName => $newFieldValue) {
+        foreach (compact('title', 'description', 'tags') as $fieldName => $newFieldValue) {
             if (! $newFieldValue) {
                 continue;
             }
