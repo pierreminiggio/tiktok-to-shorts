@@ -2,13 +2,15 @@
 
 namespace PierreMiniggioManual\TiktokToShorts\Controller;
 
+use PierreMiniggio\TiktokToShorts\Repository\ShortsValueForTikTokVideo;
 use PierreMiniggio\TiktokToShorts\Repository\VideoRepository;
 use PierreMiniggioManual\TiktokToShorts\App;
 
 class UpdateValueFormSubmitController
 {
     public function __construct(
-        private VideoRepository $videoRepository
+        private VideoRepository $videoRepository,
+        private ShortsValueForTikTokVideo $shortsValueForTikTokVideo
     )
     {
     }
@@ -41,19 +43,22 @@ class UpdateValueFormSubmitController
             return;
         }
 
-        echo '<pre>';
+        $updatedFields = [];
 
         foreach (compact('title', 'description', 'tags') as $fieldName => $newFieldValue) {
             if (! $newFieldValue) {
                 continue;
             }
 
-            var_dump($fieldName);
-            var_dump($newFieldValue);
+            $this->shortsValueForTikTokVideo->insertOrUpdateField($videoId, $fieldName, $newFieldValue);
         }
 
-        echo '</pre>';
-        die;
+        if (! $updatedFields) {
+            http_response_code(409);
+            echo json_encode(['message' => 'No updated field for video id ' . $videoId]);
+
+            return;
+        }
 
         App::redirect('?page=videos');
     }
