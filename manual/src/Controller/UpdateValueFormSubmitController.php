@@ -61,6 +61,6 @@ class UpdateValueFormSubmitController
             return;
         }
 
-        App::redirect('?page=videos');
+        App::redirect('?page=videos#video' . $videoId);
     }
 }

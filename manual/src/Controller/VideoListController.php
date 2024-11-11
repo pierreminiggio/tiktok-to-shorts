@@ -94,7 +94,7 @@ class VideoListController
                 $textAreaStyle = 'display: block; margin-bottom: 10px;';
 
                 $html .= <<<HTML
-                    <tr>
+                    <tr id="video$videoToPostId">
                         <td><a href="https://youtube.com/channel/$youtubeId" target="_blank" rel="noreferrer">$youtubeId</a></td>
                         <td>$videoFileHtml</td>
                         <td>
