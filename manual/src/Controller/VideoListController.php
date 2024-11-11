@@ -95,7 +95,7 @@ class VideoListController
                 $textAreaStyle = 'display: block; margin-bottom: 10px;';
                 $lineStyle = '';
 
-                if (str_starts_with($legend, $legend)) {
+                if (str_starts_with($legend, $title)) {
                     $lineStyle .= 'background-color: #DDFFFC;';
                 }
 
