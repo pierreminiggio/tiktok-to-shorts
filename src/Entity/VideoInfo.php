@@ -8,8 +8,16 @@ class VideoInfo
         public string $legend,
         public string $title,
         public string $description,
-        public array $tags
+        public array $tags,
+        public bool $titleChanged,
+        public bool $descriptionChanged,
+        public bool $tagsChanged,
     )
     {
+    }
+
+    public function valuesChanged(): bool
+    {
+        return $this->titleChanged || $this->descriptionChanged || $this->tagsChanged;
     }
 }

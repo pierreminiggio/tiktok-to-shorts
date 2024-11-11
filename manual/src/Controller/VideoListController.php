@@ -93,29 +93,52 @@ class VideoListController
                 $tagsString = implode(', ', $tags);
 
                 $textAreaStyle = 'display: block; margin-bottom: 10px;';
+
+                $selectedLineStyle = 'background-color: #DDFFFC;';
+
                 $lineStyle = '';
 
-                if (! str_starts_with($legend, $title)) {
-                    $lineStyle .= 'background-color: #DDFFFC;';
+                if ($videoInfos->valuesChanged()) {
+                    $lineStyle .= $selectedLineStyle;
+                }
+
+                $selectedCellStyle = 'background-color: #BDEFEC;';
+
+                $titleCellStyle = '';
+
+                if ($videoInfos->titleChanged) {
+                    $titleCellStyle .= $selectedCellStyle;
+                }
+
+                $descriptionCellStyle = '';
+
+                if ($videoInfos->descriptionChanged) {
+                    $descriptionCellStyle .= $selectedCellStyle;
+                }
+
+                $tagsCellStyle = '';
+
+                if ($videoInfos->tagsChanged) {
+                    $tagsCellStyle .= $selectedCellStyle;
                 }
 
                 $html .= <<<HTML
                     <tr id="video$videoToPostId" style="$lineStyle">
                         <td><a href="https://youtube.com/channel/$youtubeId" target="_blank" rel="noreferrer">$youtubeId</a></td>
                         <td>$videoFileHtml</td>
-                        <td>
+                        <td style="$titleCellStyle">
                             <form action="?page=updateValue&videoId=$videoToPostId" method="POST">
                                 <textarea name="title" style="$textAreaStyle">$title</textarea>
                                 <input type="submit" name="update" value="Update">
                             </form>
                         </td>
-                        <td>
+                        <td style="$descriptionCellStyle">
                             <form action="?page=updateValue&videoId=$videoToPostId" method="POST">
                                 <textarea name="description" style="$textAreaStyle min-height: 300px; min-width: 400px;">$description</textarea>
                                 <input type="submit" name="update" value="Update">
                             </form>
                         </td>
-                        <td>
+                        <td style="$tagsCellStyle">
                             <form action="?page=updateValue&videoId=$videoToPostId" method="POST">
                                 <textarea name="tags" style="$textAreaStyle">$tagsString</textarea>
                                 <input type="submit" name="update" value="Update">

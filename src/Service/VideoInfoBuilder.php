@@ -90,18 +90,21 @@ class VideoInfoBuilder
 
         $alteredFields = $this->shortsValueForTikTokVideoRepository->findForVideo($videoToPostId);
 
-        if (! empty($alteredFields['title'])) {
+        $titleChanged = ! empty($alteredFields['title']);
+        if ($titleChanged) {
             $title = $alteredFields['title'];
         }
 
-        if (! empty($alteredFields['description'])) {
+        $descriptionChanged = ! empty($alteredFields['description']);
+        if ($descriptionChanged) {
             $description = $alteredFields['description'];
         }
 
-        if (! empty($alteredFields['tags'])) {
+        $tagsChanged = ! empty($alteredFields['tags']);
+        if ($tagsChanged) {
             $tags = explode(', ', $alteredFields['tags']);
         }
 
-        return new VideoInfo($legend, $title, $description, $tags);
+        return new VideoInfo($legend, $title, $description, $tags, $titleChanged, $descriptionChanged, $tagsChanged);
     }
 }
