@@ -66,7 +66,6 @@ class VideoListController
                     $channel['description']
                 );
 
-                $legend = $videoInfos->legend;
                 $title = $videoInfos->title;
                 $description = $videoInfos->description;
                 $tags = $videoInfos->tags;
@@ -89,6 +88,8 @@ class VideoListController
                         <a href="/?page=downloadFile&videoId=$videoToPostId" target="_blank">Download</a>
                     HTML;
                 }
+
+                $maxYoutubeTitleLength = VideoInfoBuilder::getYoutubeMaxTitleLength();
 
                 $tagsString = implode(', ', $tags);
 
@@ -128,7 +129,7 @@ class VideoListController
                         <td>$videoFileHtml</td>
                         <td style="$titleCellStyle">
                             <form action="?page=updateValue&videoId=$videoToPostId" method="POST">
-                                <textarea name="title" style="$textAreaStyle">$title</textarea>
+                                <textarea name="title" maxlength="$maxYoutubeTitleLength" style="$textAreaStyle">$title</textarea>
                                 <input type="submit" name="update" value="Update">
                             </form>
                         </td>

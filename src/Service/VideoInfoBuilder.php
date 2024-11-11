@@ -13,6 +13,11 @@ class VideoInfoBuilder
     )
     {
     }
+    
+    public static function getYoutubeMaxTitleLength(): int
+    {
+        return 100;
+    }
 
     public static function getSourceVideoLink(int $videoToPostId): string
     {
@@ -25,7 +30,7 @@ class VideoInfoBuilder
         string $channelDescription
     ): VideoInfo
     {
-        $youtubeMaxTitleLength = 100;
+        $youtubeMaxTitleLength = self::getYoutubeMaxTitleLength();
 
         $defaultLegend = 'Most Awesome Shorts Video Ever #bestshorts';
         $legend = $legend ? $legend : $defaultLegend;
