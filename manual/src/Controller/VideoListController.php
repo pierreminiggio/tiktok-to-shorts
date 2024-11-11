@@ -66,6 +66,7 @@ class VideoListController
                     $channel['description']
                 );
 
+                $legend = $videoInfos->legend;
                 $title = $videoInfos->title;
                 $description = $videoInfos->description;
                 $tags = $videoInfos->tags;
@@ -92,9 +93,14 @@ class VideoListController
                 $tagsString = implode(', ', $tags);
 
                 $textAreaStyle = 'display: block; margin-bottom: 10px;';
+                $lineStyle = '';
+
+                if ($legend !== $title) {
+                    $lineStyle .= 'background-color: #DDFFFC;';
+                }
 
                 $html .= <<<HTML
-                    <tr id="video$videoToPostId">
+                    <tr id="video$videoToPostId" style="$lineStyle">
                         <td><a href="https://youtube.com/channel/$youtubeId" target="_blank" rel="noreferrer">$youtubeId</a></td>
                         <td>$videoFileHtml</td>
                         <td>
