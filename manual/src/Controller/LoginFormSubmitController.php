@@ -19,11 +19,18 @@ class LoginFormSubmitController
             App::redirect('?page=login');
         }
 
+        $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+                || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
+
+		$scheme = $isSecure ? 'https' : 'http';
+		$host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'];
+		$origin = $scheme . '://' . $host;
         $loginCurl = curl_init($this->loginApiUrl . '/api/auth/login');
         curl_setopt_array($loginCurl, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => 1,
             CURLOPT_HTTPHEADER => [
+                'Origin: ' . $origin,
                 'Content-Type: application/json'
             ],
             CURLOPT_POSTFIELDS => json_encode([
