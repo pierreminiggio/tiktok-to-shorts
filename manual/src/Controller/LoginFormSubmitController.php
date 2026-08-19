@@ -49,12 +49,16 @@ class LoginFormSubmitController
 
         $jsonResponse = json_decode($loginCurlResult, true);
 
+        if (empty($jsonResponse)) {
+            App::redirect('?page=login&error=Empty JSON Response');
+        }
+
         if (! empty($jsonResponse['error'])) {
             App::redirect('?page=login&error=' . $jsonResponse['error']);
         }
 
         if (empty($jsonResponse['token'])) {
-            throw new Exception('No token, json response : ' . json_encode($jsonResponse));
+            App::redirect('?page=login&error=No token, json response : ' . json_encode($jsonResponse));
         }
 
         $_SESSION['token'] = $jsonResponse['token'];
