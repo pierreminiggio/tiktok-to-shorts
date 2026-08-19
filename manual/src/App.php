@@ -72,7 +72,11 @@ class App
             if ($isLoggedIn) {
                 self::redirect('?page=videos');
             }
-            (new LoginFormSubmitController($loginApiUrl))();
+            $allowedUser = $config['allowed_user'] ?? null;
+            if (! $allowedUser) {
+                throw new \Exception('Config error : Missing allow_user key');
+            }
+            (new LoginFormSubmitController($loginApiUrl, $allowedUser))();
             exit;
         } elseif ($page === 'logout') {
             if (! $isLoggedIn) {

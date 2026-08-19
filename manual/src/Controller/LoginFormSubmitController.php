@@ -19,6 +19,10 @@ class LoginFormSubmitController
             App::redirect('?page=login');
         }
 
+        if ($email !== 'pierre@miniggiodev.fr') { // Only allowed user
+            App::redirect('?page=login&error=Wrong username or password');
+        }
+
         $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
                 || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443);
 

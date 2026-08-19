@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'allowed_user' => '',
     'spinner_api' => null, // [url => string, token => string]
     'cache_url' => 'https://cache.com',
     'login_api_url' => 'https://loginapiurl.fr',
