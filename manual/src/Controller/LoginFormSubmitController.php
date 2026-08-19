@@ -40,6 +40,7 @@ class LoginFormSubmitController
         ]);
 
         $loginCurlResult = curl_exec($loginCurl);
+        $httpCode = curl_getinfo($loginCurl, CURLINFO_HTTP_CODE);
         curl_close($loginCurl);
 
         if ($loginCurlResult === false) {
@@ -56,6 +57,11 @@ class LoginFormSubmitController
         if (! empty($jsonResponse['error'])) {
             App::redirect('?page=login&error=' . $jsonResponse['error']);
         }
+
+        if ($httpCode !== 200) {
+            App::redirect('?page=login&error=Bad HTTP Error : ' . $httpCode);
+        }
+
 
         if (empty($jsonResponse['token'])) {
             App::redirect('?page=login&error=No token, json response : ' . json_encode($jsonResponse));
