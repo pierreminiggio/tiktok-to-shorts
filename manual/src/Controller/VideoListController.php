@@ -21,7 +21,7 @@ class VideoListController
 
     public function __invoke()
     {
-        $channels = $this->linkedChannelRepository->findAll();
+        $channels = $this->linkedChannelRepository->findActive();
 
         $html = <<<HTML
             <head>

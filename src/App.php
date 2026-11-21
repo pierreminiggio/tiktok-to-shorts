@@ -67,7 +67,7 @@ class App
         $nonUploadedVideoRepository = new NonUploadedVideoRepository($databaseFetcher);
         $videoToPostRepository = new VideoToPostRepository($databaseFetcher);
 
-        $linkedChannels = $channelRepository->findAll();
+        $linkedChannels = $channelRepository->findActive();
 
         if (! $linkedChannels) {
             echo 'No linked channels';

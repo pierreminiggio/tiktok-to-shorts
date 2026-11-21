@@ -9,7 +9,10 @@ class LinkedChannelRepository
     public function __construct(private DatabaseFetcher $fetcher)
     {}
 
-    public function findAll(): array
+    /**
+     * Channels linked to a TikTok account that is not retired
+     */
+    public function findActive(): array
     {
         return $this->fetcher->query(
             $this->fetcher
@@ -22,6 +25,10 @@ class LinkedChannelRepository
                     'youtube_channel as y',
                     's.youtube_id = y.id'
                 )
+                ->join(
+                    'tiktok_account as ta',
+                    'ta.id = scta.tiktok_id'
+                )
                 ->select('
                     scta.tiktok_id as t_id,
                     s.id as s_id,
@@ -33,6 +40,7 @@ class LinkedChannelRepository
                     s.google_refresh_token,
                     s.description
                 ')
+                ->where('ta.retired_at IS NULL')
         );
     }
 }

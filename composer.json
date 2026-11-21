@@ -12,6 +12,11 @@
             "PierreMiniggioManual\\TiktokToShorts\\": "manual/src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "PierreMiniggio\\TiktokToShorts\\Tests\\": "tests/"
+        }
+    },
     "config": {
         "sort-packages": true
     },
@@ -24,6 +29,7 @@
         "pierreminiggio/video-render-for-tiktok-video-checker": "^2.0"
     },
     "scripts": {
+        "test": "phpunit",
         "post-install-cmd": [
             "bash post-install.sh"
         ]

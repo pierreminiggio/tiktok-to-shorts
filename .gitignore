@@ -3,3 +3,4 @@ cache/*
 !cache/index.php
 config.php
 vendor
+.phpunit.result.cache

@@ -19,6 +19,12 @@ videos is in the `manual/` folder (`manual/index.php`).
 
 Retired TikTok accounts (see below) are ignored by both.
 
+## Tests
+
+```bash
+composer test
+```
+
 ## Shared database
 
 This project shares its database with [tiktok-account-video-informations-saver](https://github.com/pierreminiggio/tiktok-account-video-informations-saver),
