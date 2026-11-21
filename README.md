@@ -1,6 +1,35 @@
 # tiktok-to-shorts
 
-Migration :
+> **Developers and AI agents: read [AGENTS.md](AGENTS.md) before making any change.**
+> It defines how features are developed (TDD) and how changes are delivered (small increments as zip files).
+
+Reposts TikTok videos as YouTube Shorts.
+
+## Usage
+
+Copy `config_example.php` to `config.php` and fill it in, then :
+
+```bash
+composer install
+php main.php
+```
+
+`php main.php` posts the next video of each linked channel. The web interface used to review and manually handle
+videos is in the `manual/` folder (`manual/index.php`).
+
+Retired TikTok accounts (see below) are ignored by both.
+
+## Shared database
+
+This project shares its database with [tiktok-account-video-informations-saver](https://github.com/pierreminiggio/tiktok-account-video-informations-saver),
+which owns the `tiktok_account` and `tiktok_video` tables. Their migrations are in **that** project's README
+and are not repeated here. Both projects must be up to date with those migrations : in particular, a TikTok account
+with a `tiktok_account.retired_at` date is retired and is ignored by this project.
+
+## Migration
+
+The SQL below is the schema of this project's own tables. Every schema change is **appended at the end of this block**,
+before the closing `COMMIT;` (see the "Database migrations" section of [AGENTS.md](AGENTS.md)).
 
 ```sql
 -- phpMyAdmin SQL Dump
